@@ -1,4 +1,5 @@
 ﻿using Harmony12;
+using System;
 using System.Reflection;
 using UnityEngine;
 using UnityModManagerNet;
@@ -27,9 +28,24 @@ namespace LocoLightsMod
             return true;
         }
 
-        private static void OnUpdate(UnityModManager.ModEntry modEntry, float value)
+        private static void OnUpdate(UnityModManager.ModEntry modEntry, float tick)
         {
             if (!enabled) { return; }
+        }
+
+        [HarmonyPatch(typeof(TrainCar), "Start")]
+        internal class LocoSteamHeavyPatch
+        {
+            private static void Postfix(TrainCar __instance)
+            {
+                if (!Main.enabled) return;
+
+                try
+                {
+                    Main.CreateHeadLight(__instance);
+                }
+                catch { }
+            }
         }
 
         public static void CreateHeadLight(TrainCar c)
@@ -37,12 +53,13 @@ namespace LocoLightsMod
             TrainCar car = c;
             if (car == null) { return; }
 
-            if (car.carType == TrainCarType.LocoSteamHeavy)
+            switch (car.carType)
             {
+            case TrainCarType.LocoSteamHeavy:
                 GameObject LDL = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 LDL.name = "LDL";
                 GameObject.Destroy(LDL.GetComponent<BoxCollider>());
-                LDL.AddComponent<HeadLight>();
+                LDL.AddComponent<LocoLights>();
                 LDL.transform.position = car.transform.position;
                 LDL.transform.rotation = car.transform.rotation;
                 LDL.transform.localScale = new Vector3(0.28f, 0.28f, 0.05f);
@@ -64,6 +81,7 @@ namespace LocoLightsMod
                 LDL_Light.enabled = false;
 
                 LDL.transform.SetParent(car.transform, true);
+                break;
             }
         }
 

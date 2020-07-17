@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 namespace LocoLightsMod
 {
-    public class HeadLight : MonoBehaviour
+    public class LocoLights : MonoBehaviour
     {
         private Renderer LDL;
         private Light LDLLight;
@@ -29,6 +30,12 @@ namespace LocoLightsMod
             {
                 LDL.enabled = false;
                 LDLLight.enabled = false;
+            }
+
+            var transform = car.transform.Find("[cab light]");
+            if (transform != null)
+            {
+                transform.gameObject.SetActive(isOn);
             }
         }
     }
