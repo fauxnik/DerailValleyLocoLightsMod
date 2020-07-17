@@ -7,7 +7,8 @@ public static class StandardShaderUtils
         Opaque,
         Cutout,
         Fade,
-        Transparent
+        Transparent,
+        Emission
     }
 
     public static void ChangeRenderMode(Material standardShaderMaterial, BlendMode blendMode)
@@ -41,6 +42,10 @@ public static class StandardShaderUtils
                 standardShaderMaterial.DisableKeyword("_ALPHAPREMULTIPLY_ON");
                 standardShaderMaterial.renderQueue = 3000;
                 break;
+            case BlendMode.Emission:
+                standardShaderMaterial.SetColor("_EMISSION", standardShaderMaterial.GetColor("_DIFFUSE"));
+                standardShaderMaterial.EnableKeyword("_EMISSION");
+                goto case BlendMode.Transparent; // this is dumb
             case BlendMode.Transparent:
                 standardShaderMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                 standardShaderMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);

@@ -1,13 +1,14 @@
 ﻿using Harmony12;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace LocoLightsMod
 {
     [HarmonyPatch(typeof(CabInputSteamExtra), "OnEnable")]
-    internal class HeadLightSwitchPatch
+    internal class SH282HeadLightSwitchPatch
     {
         static CabInputSteamExtra instance;
-        static LocoLights dl;
+        static LocoLights locoLights;
 
         private static void Postfix(CabInputSteamExtra __instance)
         {
@@ -20,17 +21,19 @@ namespace LocoLightsMod
         static IEnumerator<object> AttachListeners()
         {
             yield return (object)null;
+            Debug.Log("attach SH282");
 
-            DV.CabControls.ControlImplBase lightCtrl = instance.transform.Find("C inidactor light switch").gameObject.GetComponent<DV.CabControls.ControlImplBase>();
+            DV.CabControls.ControlImplBase lightCtrl = instance.transform.Find("C inidactor light switch")
+                .gameObject.GetComponent<DV.CabControls.ControlImplBase>();
 
             if (PlayerManager.Car.carType == TrainCarType.LocoSteamHeavy)
-                dl = PlayerManager.Car.GetComponentInChildren<LocoLights>(true);
+                locoLights = PlayerManager.Car.GetComponent<LocoLights>();
 
-            if (dl != null) { lightCtrl.SetValue(dl.isOn ? 1f : 0f); }
+            if (locoLights != null) { lightCtrl.SetValue(locoLights.IsOn ? 1f : 0f); }
 
             lightCtrl.ValueChanged += (e =>
             {
-                if (dl != null) { dl.ToggleHeadLight(PlayerManager.Car); }
+                if (locoLights != null) { locoLights.ToggleLights(); }
             });
         }
     }
