@@ -21,9 +21,9 @@ namespace LocoLightsMod
         static IEnumerator<object> AttachListeners()
         {
             yield return (object)null;
-            Debug.Log("attach SH282");
 
-            DV.CabControls.ControlImplBase lightCtrl = instance.transform.Find("C inidactor light switch")
+            var light_switch = GameObjectUtils.FindObject(instance.transform.gameObject, "C inidactor light switch");
+            DV.CabControls.ControlImplBase lightCtrl = light_switch
                 .gameObject.GetComponent<DV.CabControls.ControlImplBase>();
 
             if (PlayerManager.Car.carType == TrainCarType.LocoSteamHeavy)
@@ -33,7 +33,7 @@ namespace LocoLightsMod
 
             lightCtrl.ValueChanged += (e =>
             {
-                if (locoLights != null) { locoLights.ToggleLights(); }
+                if (locoLights != null) { locoLights.SetLights(e.newValue); }
             });
         }
     }

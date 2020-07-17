@@ -15,6 +15,7 @@ namespace LocoLightsMod
         private Transform cabLight;
         private Action<float> cabFlickerer;
         public bool IsOn { get; private set; }
+        public float Direction { get; private set; }
 
         public void Init(TrainCar car, LocoLightData[] exterior, LocoLightData cab)
 		{
@@ -22,31 +23,57 @@ namespace LocoLightsMod
             this.car = car;
             this.exterior = exterior;
             this.cab = cab;
-            this.cabLight = car.transform.Find("[cab light]");
+            cabLight = car.transform.Find("[cab light]");
+            Direction = 0.5f;
         }
 
-        public void ToggleLights()
+        public void SetLights(float ctrlValue)
+		{
+            IsOn = ctrlValue > 0.5f;
+            UpdateLights();
+		}
+
+        public void SetDirection(float direction)
+		{
+            Direction = direction;
+            UpdateFlickerers();
+            UpdateLights();
+		}
+
+        private void UpdateFlickerers()
+		{
+            Debug.Log("updating flickerers (direction=" + Direction + ")");
+            for(int i = 0; i < exterior.Length; i++)
+			{
+                LocoLightData datum = exterior[i];
+                if (flickerers[i] != null) { Main.Update -= flickerers[i]; }
+                float dirScale = Direction > 0.55 ? datum.scaleFwd : Direction < 0.45 ? datum.scaleRev : datum.scaleNtl;
+                flickerers[i] = FlickerLight(lights[i], datum.min, datum.max, datum.rate, dirScale);
+            }
+            if (cabFlickerer != null) { Main.Update -= cabFlickerer; }
+            cabFlickerer = FlickerLight(cabLight.GetComponent<Light>(), cab.min, cab.max, cab.rate);
+        }
+
+        private void UpdateLights()
         {
             if (car == null || exterior == null || cabLight == null) { return; }
-            Debug.Log("toggle train car " + car.logicCar.ID);
+            Debug.Log("updating lights (ison=" + IsOn + ")");
 
             if (renderers == null)
             {
                 renderers = new Renderer[exterior.Length];
                 lights = new Light[exterior.Length];
                 flickerers = new Action<float>[exterior.Length];
-                cabFlickerer = FlickerLight(cabLight.GetComponent<Light>(), cab.min, cab.max, cab.flicker);
 
                 for (int i = 0; i < exterior.Length; i++)
 				{
                     LocoLightData datum = exterior[i];
                     renderers[i] = car.transform.Find(datum.type.ToString()).gameObject.GetComponent<Renderer>();
                     lights[i] = renderers[i].transform.gameObject.GetComponent<Light>();
-                    flickerers[i] = FlickerLight(lights[i], datum.min, datum.max, datum.flicker);
 				}
-            }
 
-            IsOn = !IsOn;
+                UpdateFlickerers();
+            }
 
             for(int i = 0; i < renderers.Length; i++)
 			{
@@ -67,22 +94,21 @@ namespace LocoLightsMod
             else { Main.Update -= cabFlickerer; }
         }
 
-        private Action<float> FlickerLight(Light light, float min = 0f, float max = 1f, float scale = 1f, int factor = 1)
+        private Action<float> FlickerLight(Light light, float min = 0f, float max = 1f, float rate = 1f, float scale = 1f)
         {
             float t = 0;
-            factor = Math.Max(factor, 1);
 
-            // prevent flash bulb effect when first turning on
-            light.intensity = 0f;
-
-            return delta =>
+            Action<float> flicker = delta =>
             {
-                float multiplier = 1f;
-                for (int i = 0; i < factor; i++) { multiplier *= Mathf.PerlinNoise(t, 0f); }
-                light.intensity = (max - min) * multiplier + min;
+                light.intensity = scale * ((max - min) * Mathf.PerlinNoise(t, 0f) + min);
 
-                t += delta * scale;
+                t += delta * rate;
             };
+
+            // prevent flash effect when turning on or changing direction
+            flicker(0);
+
+            return flicker;
         }
 
         public static void SetupLights(TrainCar c)
@@ -166,11 +192,11 @@ namespace LocoLightsMod
                     car.transform.gameObject.AddComponent<LocoLights>();
                     car.transform.gameObject.GetComponent<LocoLights>().Init(car, new LocoLightData[]
                     {
-                        new LocoLightData(LocoLightType.LFDL, 4f, 1f, 1.75f, 1f, 0.3f, 0.3f),
-                        new LocoLightData(LocoLightType.RFDL, 4f, 1f, 1.75f, 1f, 0.3f, 0.3f),
-                        new LocoLightData(LocoLightType.LRDL, 4f, 1f, 1.75f, 0.3f, 1f, 0.3f),
-                        new LocoLightData(LocoLightType.RRDL, 4f, 1f, 1.75f, 0.3f, 1f, 0.3f)
-                    }, new LocoLightData(LocoLightType.cab, 4f, 0.05f, 0.1f));
+                        new LocoLightData(LocoLightType.LFDL, 4f, 1f, 1.75f, 1f, 0.35f, 0.35f),
+                        new LocoLightData(LocoLightType.RFDL, 4f, 1f, 1.75f, 1f, 0.35f, 0.35f),
+                        new LocoLightData(LocoLightType.LRDL, 4f, 1f, 1.75f, 0.35f, 1f, 0.35f),
+                        new LocoLightData(LocoLightType.RRDL, 4f, 1f, 1.75f, 0.35f, 1f, 0.35f)
+                    }, new LocoLightData(LocoLightType.cab, 2f, 0.075f, 0.1f));
 
                     LFDL = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                     LFDL.name = LocoLightType.LFDL.ToString();

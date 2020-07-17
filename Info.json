@@ -4,6 +4,5 @@
     "Author": "fauxnik",
     "Version": "1.0.0",
     "AssemblyName": "LocoLightsMod.dll",
-    "EntryMethod": "LocoLightsMod.Main.Load",
-    "Repository": "https://raw.githubusercontent.com/fauxnik/DerailValleyLocoLightsMod/master/Repository.json"
+    "EntryMethod": "LocoLightsMod.Main.Load"
 }

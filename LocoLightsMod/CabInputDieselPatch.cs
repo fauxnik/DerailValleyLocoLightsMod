@@ -21,11 +21,9 @@ namespace LocoLightsMod
         static IEnumerator<object> AttachListeners()
         {
             yield return (object)null;
-            Debug.Log("attach DE6");
 
-            var transform = GameObjectUtils.FindObject(instance.transform.gameObject, "C headlights dash_rotary01");
-            Debug.Log("transform is null? " + (transform == null));
-            DV.CabControls.ControlImplBase lightCtrl = transform
+            var rotary01 = GameObjectUtils.FindObject(instance.transform.gameObject, "C headlights dash_rotary01");
+            DV.CabControls.ControlImplBase lightCtrl = rotary01
                 .gameObject.GetComponent<DV.CabControls.ControlImplBase>();
 
             if (PlayerManager.Car.carType == TrainCarType.LocoDiesel)
@@ -35,7 +33,7 @@ namespace LocoLightsMod
 
             lightCtrl.ValueChanged += (e =>
             {
-                if (locoLights != null) { locoLights.ToggleLights(); }
+                if (locoLights != null) { locoLights.SetLights(e.newValue); }
             });
         }
     }

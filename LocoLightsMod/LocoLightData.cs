@@ -8,11 +8,11 @@
 		public readonly float scaleFwd;
 		public readonly float scaleRev;
 		public readonly float scaleNtl;
-		public readonly float flicker;
+		public readonly float rate;
 
 		public LocoLightData(
 			LocoLightType type,
-			float flickerIntensity,
+			float rate,
 			float brightnessMin,
 			float brightnessMax,
 			float scaleFwd = 1f,
@@ -25,7 +25,7 @@
 			this.scaleFwd = scaleFwd;
 			this.scaleRev = scaleRev;
 			this.scaleNtl = scaleNtl;
-			this.flicker = flickerIntensity;
+			this.rate = rate;
 		}
 	}
 }
