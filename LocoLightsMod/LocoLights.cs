@@ -1,40 +1,40 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 namespace LocoLightsMod
 {
     public class LocoLights : MonoBehaviour
     {
-        private Renderer LDL;
-        private Light LDLLight;
+        private Renderer FHL_R;
+        private Light FHL_Light;
         private TrainCar car;
-        private IEnumerator<object> HeadLightFlicker;
-        private IEnumerator<object> CabLightFlicker;
+        private Action<float> HeadLightFlicker;
+        private Action<float> CabLightFlicker;
         public bool isOn = false;
 
         public void ToggleHeadLight(TrainCar c)
         {
             car = c;
 
-            if (LDL == null)
+            if (FHL_R == null)
             {
-                LDL = car.transform.Find("LDL").gameObject.GetComponent<Renderer>();
-                LDLLight = LDL.transform.gameObject.GetComponent<Light>();
+                FHL_R = car.transform.Find("FHL").gameObject.GetComponent<Renderer>();
+                FHL_Light = FHL_R.transform.gameObject.GetComponent<Light>();
             }
 
             isOn = !isOn;
             if (isOn)
             {
-                LDL.enabled = true;
-                LDLLight.enabled = true;
-                HeadLightFlicker = FlickerLight(LDLLight);
-                car.StartCoroutine(HeadLightFlicker);
+                FHL_R.enabled = true;
+                FHL_Light.enabled = true;
+                Main.Update += HeadLightFlicker = FlickerLight(FHL_Light, 1f, 2.25f, 4f);
             }
             else
             {
-                LDL.enabled = false;
-                LDLLight.enabled = false;
-                car.StopCoroutine(HeadLightFlicker);
+                FHL_R.enabled = false;
+                FHL_Light.enabled = false;
+                Main.Update -= HeadLightFlicker;
                 HeadLightFlicker = null;
             }
 
@@ -44,46 +44,32 @@ namespace LocoLightsMod
                 transform.gameObject.SetActive(isOn);
                 if (isOn)
 				{
-                    CabLightFlicker = FlickerLight(transform.GetComponent<Light>());
-                    car.StartCoroutine(CabLightFlicker);
+                    Light cabLight = transform.GetComponent<Light>();
+                    Main.Update += CabLightFlicker = FlickerLight(cabLight, 0.015f, 0.2f, 4f);
 				}
 				else
 				{
-                    car.StopCoroutine(CabLightFlicker);
+                    Main.Update -= CabLightFlicker;
                     CabLightFlicker = null;
 				}
             }
         }
 
-        private IEnumerator<object> FlickerLight(Light light, float min = 0.7f, float max = 1.0f)
+        private Action<float> FlickerLight(Light light, float min = 0f, float max = 1f, float scale = 1f, int factor = 1)
         {
-            int x = 0;
-            int y = 0;
-            bool isRevX = false;
-            bool isRevY = true;
+            float t = 0;
+            factor = Math.Max(factor, 1);
 
-            min = Mathf.Clamp(min, 0f, 1f);
-            max = Mathf.Clamp(max, 0f, 1f);
-
-            while (true)
+            return delta =>
             {
-                yield return WaitFor.SecondsRealtime(0.025f);
+                float multiplier = 1f;
 
-                light.intensity = (max - min) * Mathf.PerlinNoise(x, y) + min;
+                for (int i = 0; i < factor; i++) { multiplier *= Mathf.PerlinNoise(t, 0f); }
 
-                x += isRevX ? -1 : 1;
+                light.intensity = (max - min) * multiplier + min;
 
-                if (x + 1 > int.MaxValue || x - 1 < 0)
-                {
-                    isRevX = !isRevX;
-                    y += isRevY ? -1 : 1;
-
-                    if (y + 1 > int.MaxValue || y - 1 < 0)
-                    {
-                        isRevY = !isRevY;
-                    }
-                }
-            }
+                t += delta * scale;
+            };
         }
     }
 }

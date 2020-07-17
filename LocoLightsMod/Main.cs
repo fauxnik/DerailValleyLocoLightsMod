@@ -9,6 +9,7 @@ namespace LocoLightsMod
     public class Main
     {
         public static bool enabled;
+        public static Action<float> Update;
 
         private static bool OnToggle(UnityModManager.ModEntry modEntry, bool value)
         {
@@ -28,9 +29,14 @@ namespace LocoLightsMod
             return true;
         }
 
-        private static void OnUpdate(UnityModManager.ModEntry modEntry, float tick)
+        private static void OnUpdate(UnityModManager.ModEntry modEntry, float delta)
         {
             if (!enabled) { return; }
+
+            if (Update != null)
+			{
+                Update(delta);
+			}
         }
 
         [HarmonyPatch(typeof(TrainCar), "Start")]
@@ -42,45 +48,62 @@ namespace LocoLightsMod
 
                 try
                 {
-                    Main.CreateHeadLight(__instance);
+                    Main.SetupLights(__instance);
                 }
                 catch { }
             }
         }
 
-        public static void CreateHeadLight(TrainCar c)
+        public static void SetupLights(TrainCar c)
         {
             TrainCar car = c;
             if (car == null) { return; }
 
+            GameObject FHL;
+            Renderer FHL_R;
+            Light FHL_Light;
+
             switch (car.carType)
             {
             case TrainCarType.LocoSteamHeavy:
-                GameObject LDL = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                LDL.name = "LDL";
-                GameObject.Destroy(LDL.GetComponent<BoxCollider>());
-                LDL.AddComponent<LocoLights>();
-                LDL.transform.position = car.transform.position;
-                LDL.transform.rotation = car.transform.rotation;
-                LDL.transform.localScale = new Vector3(0.28f, 0.28f, 0.05f);
-                Renderer LDR = LDL.GetComponent<Renderer>();
-                StandardShaderUtils.ChangeRenderMode(LDR.material, StandardShaderUtils.BlendMode.Transparent);
-                LDR.material.color = new Color32(255, 255, 255, 150);
-                LDR.enabled = false;
+                FHL = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                FHL.name = "FHL";
+                GameObject.Destroy(FHL.GetComponent<BoxCollider>());
+                FHL.AddComponent<LocoLights>();
+                FHL.transform.position = car.transform.position;
+                FHL.transform.rotation = car.transform.rotation;
+                FHL.transform.localScale = new Vector3(0.28f, 0.28f, 0.05f);
+                FHL_R = FHL.GetComponent<Renderer>();
+                StandardShaderUtils.ChangeRenderMode(FHL_R.material, StandardShaderUtils.BlendMode.Transparent);
+                FHL_R.material.color = new Color32(255, 255, 255, 150);
+                FHL_R.enabled = false;
 
-                LDL.transform.position += car.transform.forward * 10.96f;
-                LDL.transform.position += car.transform.up * 3.58f;
+                FHL.transform.position += car.transform.forward * 10.96f;
+                FHL.transform.position += car.transform.up * 3.58f;
 
-                Light LDL_Light = LDL.AddComponent<Light>();
-                LDL_Light.shadows = LightShadows.Soft;
-                LDL_Light.type = LightType.Spot;
-                LDL_Light.spotAngle = 50;
-                LDL_Light.color = new Color32(255, 255, 255, 255);
-                LDL_Light.range = 26;
-                LDL_Light.intensity = 2.25f;
-                LDL_Light.enabled = false;
+                FHL_Light = FHL.AddComponent<Light>();
+                FHL_Light.shadows = LightShadows.Soft;
+                FHL_Light.type = LightType.Spot;
+                FHL_Light.spotAngle = 50;
+                FHL_Light.color = new Color32(255, 251, 225, 255);
+                FHL_Light.range = 26;
+                FHL_Light.intensity = 2.25f;
+                FHL_Light.enabled = false;
 
-                LDL.transform.SetParent(car.transform, true);
+                FHL.transform.SetParent(car.transform, true);
+
+                // default cab light: Color32(255, 253, 240, 255)
+                car.transform.Find("[cab light]").GetComponent<Light>().color = new Color32(255, 178, 63, 255);
+                break;
+
+            case TrainCarType.LocoShunter:
+                // default cab light: Color32(255, 253, 240, 255)
+                car.transform.Find("[cab light]").GetComponent<Light>().color = new Color32(255, 251, 225, 255);
+                break;
+
+            case TrainCarType.LocoDiesel:
+                // default cab light: Color32(255, 253, 240, 255)
+                car.transform.Find("[cab light]").GetComponent<Light>().color = new Color(255, 251, 225, 255);
                 break;
             }
         }
