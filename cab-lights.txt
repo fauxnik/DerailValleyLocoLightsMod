@@ -1,4 +1,4 @@
-[cab light] DE2
+[cab light] DE6
   type=Point
   spotAngle=30
   innerSpotAngle=21.80208
