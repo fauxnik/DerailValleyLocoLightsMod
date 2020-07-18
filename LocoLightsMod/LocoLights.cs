@@ -132,15 +132,15 @@ namespace LocoLightsMod
                     car.transform.gameObject.AddComponent<LocoLights>();
                     car.transform.gameObject.GetComponent<LocoLights>().Init(car, new LocoLightData[]
                     {
-                        new LocoLightData(LocoLightType.FHL, 4f, 1f, 2.25f)
-                    }, new LocoLightData(LocoLightType.cab, 4f, 0.015f, 0.2f));
+                        new LocoLightData(LocoLightType.FHL, 4f, 0.75f, 1.75f)
+                    }, new LocoLightData(LocoLightType.cab, 5f, 0.015f, 0.25f));
 
                     // Front Head Light
                     go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                     go.name = LocoLightType.FHL.ToString();
                     GameObject.Destroy(go.GetComponent<BoxCollider>());
                     go.transform.position = car.transform.position;
-                    go.transform.rotation = car.transform.rotation;
+                    go.transform.rotation = Quaternion.Euler(euler.x + 7.5f, euler.y, euler.z);
                     go.transform.localScale = new Vector3(0.28f, 0.28f, 0.05f);
                     r = go.GetComponent<Renderer>();
                     r.material.color = new Color32(255, 255, 255, 150);
@@ -149,9 +149,10 @@ namespace LocoLightsMod
                     l = go.AddComponent<Light>();
                     l.shadows = LightShadows.Soft;
                     l.type = LightType.Spot;
-                    l.spotAngle = 50;
-                    l.color = new Color32(255, 251, 225, 255);
-                    l.range = 26;
+                    l.innerSpotAngle = 14;
+                    l.spotAngle = 42;
+                    l.color = new Color32(255, 198, 111, 255);
+                    l.range = 98;
                     l.enabled = false;
 
                     go.transform.position += car.transform.forward * 10.96f;
@@ -160,7 +161,7 @@ namespace LocoLightsMod
                     go.transform.SetParent(car.transform, true);
 
                     // default cab light: Color32(255, 253, 240, 255)
-                    car.transform.Find("[cab light]").GetComponent<Light>().color = new Color32(255, 178, 63, 255);
+                    car.transform.Find("[cab light]").GetComponent<Light>().color = new Color32(255, 179, 63, 255);
                     break;
 
                 case TrainCarType.LocoShunter:
@@ -178,7 +179,7 @@ namespace LocoLightsMod
                     go.name = LocoLightType.LFDL.ToString();
                     GameObject.Destroy(go.GetComponent<BoxCollider>());
                     go.transform.position = car.transform.position;
-                    go.transform.rotation = car.transform.rotation;
+                    go.transform.rotation = Quaternion.Euler(euler.x + 7.5f, euler.y, euler.z);
                     go.transform.localScale = new Vector3(0.21f, 0.21f, 0.05f);
                     r = go.GetComponent<Renderer>();
                     r.material.color = new Color32(255, 255, 255, 150);
@@ -187,7 +188,8 @@ namespace LocoLightsMod
                     l = go.AddComponent<Light>();
                     l.shadows = LightShadows.Soft;
                     l.type = LightType.Spot;
-                    l.spotAngle = 50;
+                    l.innerSpotAngle = 17;
+                    l.spotAngle = 51;
                     l.color = new Color32(255, 251, 225, 255);
                     l.range = 26;
                     l.enabled = false;
@@ -210,7 +212,7 @@ namespace LocoLightsMod
                     go.transform.SetParent(car.transform, true);
 
                     // Left Rear Ditch Light
-                    go = GameObject.Instantiate(go, car.transform.position, Quaternion.Euler(euler.x, euler.y + 180f, euler.z));
+                    go = GameObject.Instantiate(go, car.transform.position, Quaternion.Euler(euler.x + 7.5f, euler.y + 180f, euler.z));
                     go.name = LocoLightType.LRDL.ToString();
                     (r = go.GetComponent<Renderer>()).enabled = false;
                     (l = go.GetComponent<Light>()).enabled = false;
@@ -240,12 +242,12 @@ namespace LocoLightsMod
                     car.transform.gameObject.AddComponent<LocoLights>();
                     car.transform.gameObject.GetComponent<LocoLights>().Init(car, new LocoLightData[]
                     {
-                        new LocoLightData(LocoLightType.FHL, 4f, 1f, 2f, 1f, 0.35f, 0.35f),
-                        new LocoLightData(LocoLightType.LFDL, 4f, 1f, 2f, 1f, 0.35f, 0.35f),
-                        new LocoLightData(LocoLightType.RFDL, 4f, 1f, 2f, 1f, 0.35f, 0.35f),
-                        new LocoLightData(LocoLightType.RHL, 4f, 1f, 2f, 0.35f, 1f, 0.35f),
-                        new LocoLightData(LocoLightType.LRDL, 4f, 1f, 2f, 0.35f, 1f, 0.35f),
-                        new LocoLightData(LocoLightType.RRDL, 4f, 1f, 2f, 0.35f, 1f, 0.35f)
+                        new LocoLightData(LocoLightType.FHL, 4f, 1.25f, 2f, 1f, 0.35f, 0.35f),
+                        new LocoLightData(LocoLightType.LFDL, 4f, 1f, 1.75f, 1f, 0.35f, 0.35f),
+                        new LocoLightData(LocoLightType.RFDL, 4f, 1f, 1.75f, 1f, 0.35f, 0.35f),
+                        new LocoLightData(LocoLightType.RHL, 4f, 1.25f, 2f, 0.35f, 1f, 0.35f),
+                        new LocoLightData(LocoLightType.LRDL, 4f, 1f, 1.75f, 0.35f, 1f, 0.35f),
+                        new LocoLightData(LocoLightType.RRDL, 4f, 1f, 1.75f, 0.35f, 1f, 0.35f)
                     }, new LocoLightData(LocoLightType.cab, 2f, 0.45f, 0.6f));
 
                     // Front Head Light
@@ -262,7 +264,7 @@ namespace LocoLightsMod
                     l = go.AddComponent<Light>();
                     l.shadows = LightShadows.Soft;
                     l.type = LightType.Spot;
-                    l.innerSpotAngle = 28;
+                    l.innerSpotAngle = 14;
                     l.spotAngle = 42;
                     l.color = new Color32(255, 251, 225, 255);
                     l.range = 98;
@@ -280,12 +282,12 @@ namespace LocoLightsMod
                     go.name = LocoLightType.LFDL.ToString();
                     (r = go.GetComponent<Renderer>()).enabled = false;
                     (l = go.GetComponent<Light>()).enabled = false;
-                    l.innerSpotAngle = 34;
+                    l.innerSpotAngle = 17;
                     l.spotAngle = 51;
                     l.range = 26;
 
                     offsetX = 0.6115f;
-                    offsetθ = 13.5f;
+                    offsetθ = 0; // 13.5f;
                     go.transform.position += car.transform.forward * (8.368f - offsetZ);
                     go.transform.position += car.transform.up * (2.007f - offsetY);
                     go.transform.position += -car.transform.right * offsetX;
@@ -310,7 +312,7 @@ namespace LocoLightsMod
                     go.name = LocoLightType.RHL.ToString();
                     (r = go.GetComponent<Renderer>()).enabled = false;
                     (l = go.GetComponent<Light>()).enabled = false;
-                    l.innerSpotAngle = 28;
+                    l.innerSpotAngle = 14;
                     l.spotAngle = 42;
                     l.range = 98;
 
@@ -327,7 +329,7 @@ namespace LocoLightsMod
                     go.name = LocoLightType.LRDL.ToString();
                     (r = go.GetComponent<Renderer>()).enabled = false;
                     (l = go.GetComponent<Light>()).enabled = false;
-                    l.innerSpotAngle = 34;
+                    l.innerSpotAngle = 17;
                     l.spotAngle = 51;
                     l.range = 26;
 
