@@ -1,0 +1,47 @@
+[cab light] DE2
+  type=Point
+  spotAngle=30
+  innerSpotAngle=21.80208
+  color=RGBA(1.000, 0.992, 0.941, 1.000)
+  colorTemperature=6570
+  intensity=0.5
+  bounceIntensity=1
+  useBoundingSphereOverride=False
+  boundingSphereOverride=(0.0, 0.0, 0.0, 0.0)
+  shadowCustomResolution=-1
+  shadowBias=0.05
+  shadowNormalBias=0.4
+  shadowNearPlane=0.2
+  useShadowMatrixOverride=False
+  shadowMatrixOverride=1.00000	0.00000	0.00000	0.00000
+                       0.00000	1.00000	0.00000	0.00000
+                       0.00000	0.00000	1.00000	0.00000
+                       0.00000	0.00000	0.00000	1.00000
+  range=6.6
+  flare=
+  bakingOutput=UnityEngine.LightBakingOutput
+  cullingMask=-1
+  renderingLayerMask=1
+  lightShadowCasterMode=Default
+  shadows=None
+  shadowStrength=1
+  shadowResolution=FromQualitySettings
+  shadowSoftness=4
+  shadowSoftnessFade=1
+  layerShadowCullDistances=System.Single[]
+  cookieSize=10
+  cookie=
+  renderMode=Auto
+  bakedIndex=0
+  commandBufferCount=0
+  pixelLightCount=4
+  shadowConstantBias=0
+  shadowObjectSizeBias=0
+  attenuate=True
+  enabled=True
+  isActiveAndEnabled=False
+  transform=[cab light] (UnityEngine.Transform)
+  gameObject=[cab light] (UnityEngine.GameObject)
+  tag=Untagged
+  name=[cab light]
+  hideFlags=None
