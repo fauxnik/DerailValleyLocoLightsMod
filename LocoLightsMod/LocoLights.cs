@@ -140,7 +140,7 @@ namespace LocoLightsMod
                     go.name = LocoLightType.FHL.ToString();
                     GameObject.Destroy(go.GetComponent<BoxCollider>());
                     go.transform.position = car.transform.position;
-                    go.transform.rotation = Quaternion.Euler(euler.x + 7.5f, euler.y, euler.z);
+                    go.transform.rotation = Quaternion.Euler(euler.x + 10f, euler.y, euler.z);
                     go.transform.localScale = new Vector3(0.28f, 0.28f, 0.05f);
                     r = go.GetComponent<Renderer>();
                     r.material.color = new Color32(255, 255, 255, 150);
@@ -179,7 +179,7 @@ namespace LocoLightsMod
                     go.name = LocoLightType.LFDL.ToString();
                     GameObject.Destroy(go.GetComponent<BoxCollider>());
                     go.transform.position = car.transform.position;
-                    go.transform.rotation = Quaternion.Euler(euler.x + 7.5f, euler.y, euler.z);
+                    go.transform.rotation = Quaternion.Euler(euler.x + 5f, euler.y, euler.z);
                     go.transform.localScale = new Vector3(0.21f, 0.21f, 0.05f);
                     r = go.GetComponent<Renderer>();
                     r.material.color = new Color32(255, 255, 255, 150);
@@ -191,7 +191,7 @@ namespace LocoLightsMod
                     l.innerSpotAngle = 17;
                     l.spotAngle = 51;
                     l.color = new Color32(255, 251, 225, 255);
-                    l.range = 26;
+                    l.range = 39;
                     l.enabled = false;
 
                     offsetX = 0.65f;
@@ -212,7 +212,7 @@ namespace LocoLightsMod
                     go.transform.SetParent(car.transform, true);
 
                     // Left Rear Ditch Light
-                    go = GameObject.Instantiate(go, car.transform.position, Quaternion.Euler(euler.x + 7.5f, euler.y + 180f, euler.z));
+                    go = GameObject.Instantiate(go, car.transform.position, Quaternion.Euler(euler.x + 5f, euler.y + 180f, euler.z));
                     go.name = LocoLightType.LRDL.ToString();
                     (r = go.GetComponent<Renderer>()).enabled = false;
                     (l = go.GetComponent<Light>()).enabled = false;
@@ -255,7 +255,7 @@ namespace LocoLightsMod
                     go.name = LocoLightType.FHL.ToString();
                     GameObject.Destroy(go.GetComponent<BoxCollider>());
                     go.transform.position = car.transform.position;
-                    go.transform.rotation = Quaternion.Euler(euler.x + 7.5f, euler.y, euler.z);
+                    go.transform.rotation = Quaternion.Euler(euler.x + 10f, euler.y, euler.z);
                     go.transform.localScale = new Vector3(0.19f, 0.19f, 0.05f);
                     r = go.GetComponent<Renderer>();
                     r.material.color = new Color32(255, 255, 255, 150);
@@ -308,7 +308,7 @@ namespace LocoLightsMod
                     go.transform.SetParent(car.transform, true);
 
                     // Rear Head Light
-                    go = GameObject.Instantiate(go, car.transform.position, Quaternion.Euler(euler.x + 7.5f, euler.y + 180f, euler.z));
+                    go = GameObject.Instantiate(go, car.transform.position, Quaternion.Euler(euler.x + 10f, euler.y + 180f, euler.z));
                     go.name = LocoLightType.RHL.ToString();
                     (r = go.GetComponent<Renderer>()).enabled = false;
                     (l = go.GetComponent<Light>()).enabled = false;
@@ -334,9 +334,11 @@ namespace LocoLightsMod
                     l.range = 26;
 
                     offsetX = 0.615f;
+                    offsetθ = 0;
                     go.transform.position += -car.transform.forward * (8.237f - offsetZ);
                     go.transform.position += car.transform.up * (2.007f - offsetY);
                     go.transform.position += -car.transform.right * offsetX;
+                    go.transform.rotation = Quaternion.Euler(euler.x + 7.5f, euler.y + offsetθ, euler.z);
                     go.transform.localScale = new Vector3(0.165f, 0.165f, 0.05f);
 
                     go.transform.SetParent(car.transform, true);
@@ -348,6 +350,7 @@ namespace LocoLightsMod
                     (l = go.GetComponent<Light>()).enabled = false;
 
                     go.transform.position += car.transform.right * 2f * offsetX;
+                    go.transform.rotation = Quaternion.Euler(euler.x + 7.5f, euler.y - offsetθ, euler.z);
 
                     go.transform.SetParent(car.transform, true);
 
