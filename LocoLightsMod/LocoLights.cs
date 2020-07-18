@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 using System;
 
 namespace LocoLightsMod
@@ -23,7 +22,7 @@ namespace LocoLightsMod
             this.car = car;
             this.exterior = exterior;
             this.cab = cab;
-            cabLight = car.transform.Find("[cab light]");
+            cabLight = car.transform.Find("[cab light override]") ?? car.transform.Find("[cab light]");
             Direction = 0.5f;
         }
 
@@ -247,7 +246,7 @@ namespace LocoLightsMod
                         new LocoLightData(LocoLightType.RHL, 4f, 1f, 2f, 0.35f, 1f, 0.35f),
                         new LocoLightData(LocoLightType.LRDL, 4f, 1f, 2f, 0.35f, 1f, 0.35f),
                         new LocoLightData(LocoLightType.RRDL, 4f, 1f, 2f, 0.35f, 1f, 0.35f)
-                    }, new LocoLightData(LocoLightType.cab, 2f, 0f, 0f)); // 0.075f, 0.1f));
+                    }, new LocoLightData(LocoLightType.cab, 2f, 0.45f, 0.6f));
 
                     // Front Head Light
                     go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -263,7 +262,8 @@ namespace LocoLightsMod
                     l = go.AddComponent<Light>();
                     l.shadows = LightShadows.Soft;
                     l.type = LightType.Spot;
-                    l.spotAngle = 28;
+                    l.innerSpotAngle = 28;
+                    l.spotAngle = 42;
                     l.color = new Color32(255, 251, 225, 255);
                     l.range = 98;
                     l.enabled = false;
@@ -280,7 +280,8 @@ namespace LocoLightsMod
                     go.name = LocoLightType.LFDL.ToString();
                     (r = go.GetComponent<Renderer>()).enabled = false;
                     (l = go.GetComponent<Light>()).enabled = false;
-                    l.spotAngle = 35;
+                    l.innerSpotAngle = 34;
+                    l.spotAngle = 51;
                     l.range = 26;
 
                     offsetX = 0.6115f;
@@ -309,7 +310,8 @@ namespace LocoLightsMod
                     go.name = LocoLightType.RHL.ToString();
                     (r = go.GetComponent<Renderer>()).enabled = false;
                     (l = go.GetComponent<Light>()).enabled = false;
-                    l.spotAngle = 28;
+                    l.innerSpotAngle = 28;
+                    l.spotAngle = 42;
                     l.range = 98;
 
                     offsetY = 3.43f;
@@ -325,7 +327,8 @@ namespace LocoLightsMod
                     go.name = LocoLightType.LRDL.ToString();
                     (r = go.GetComponent<Renderer>()).enabled = false;
                     (l = go.GetComponent<Light>()).enabled = false;
-                    l.spotAngle = 35;
+                    l.innerSpotAngle = 34;
+                    l.spotAngle = 51;
                     l.range = 26;
 
                     offsetX = 0.615f;
@@ -346,8 +349,20 @@ namespace LocoLightsMod
 
                     go.transform.SetParent(car.transform, true);
 
+                    // this is dumb, but DE6 cab light is fucked
+                    Transform cabLight = car.transform.Find("[cab light]");
+                    go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    go.name = "[cab light override]";
+                    r = go.GetComponent<Renderer>();
+                    r.enabled = false;
+                    l = go.AddComponent<Light>();
+                    l.type = LightType.Point;
                     // default cab light: Color32(255, 253, 240, 255)
-                    car.transform.Find("[cab light]").GetComponent<Light>().color = new Color(255, 251, 225, 255);
+                    l.color = new Color32(255, 251, 225, 255);
+                    l.range = 6.6f;
+                    l.enabled = false;
+                    go.transform.position = cabLight.position;
+                    go.transform.SetParent(cabLight, true);
                     break;
             }
         }
