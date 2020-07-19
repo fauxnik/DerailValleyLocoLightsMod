@@ -11,7 +11,7 @@ public static class StandardShaderUtils
         Emission
     }
 
-    public static void ChangeRenderMode(Material standardShaderMaterial, BlendMode blendMode)
+    public static void ChangeRenderMode(Material standardShaderMaterial, BlendMode blendMode, Color? emissionColor = null)
     {
         switch (blendMode)
         {
@@ -42,10 +42,6 @@ public static class StandardShaderUtils
                 standardShaderMaterial.DisableKeyword("_ALPHAPREMULTIPLY_ON");
                 standardShaderMaterial.renderQueue = 3000;
                 break;
-            case BlendMode.Emission:
-                standardShaderMaterial.SetColor("_EMISSION", standardShaderMaterial.GetColor("_DIFFUSE"));
-                standardShaderMaterial.EnableKeyword("_EMISSION");
-                goto case BlendMode.Transparent; // this is dumb
             case BlendMode.Transparent:
                 standardShaderMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                 standardShaderMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
@@ -53,6 +49,19 @@ public static class StandardShaderUtils
                 standardShaderMaterial.DisableKeyword("_ALPHATEST_ON");
                 standardShaderMaterial.DisableKeyword("_ALPHABLEND_ON");
                 standardShaderMaterial.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+                standardShaderMaterial.renderQueue = 3000;
+                break;
+            case BlendMode.Emission:
+                Color c = emissionColor ?? Color.white;
+                standardShaderMaterial.EnableKeyword("_EMISSION");
+                standardShaderMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
+                standardShaderMaterial.SetColor("_EmissionColor", new Vector4(c.r, c.g, c.b, 0) * 100);
+                standardShaderMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                standardShaderMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                standardShaderMaterial.SetInt("_ZWrite", 0);
+                standardShaderMaterial.DisableKeyword("_ALPHATEST_ON");
+                standardShaderMaterial.EnableKeyword("_ALPHABLEND_ON");
+                standardShaderMaterial.DisableKeyword("_ALPHAPREMULTIPLY_ON");
                 standardShaderMaterial.renderQueue = 3000;
                 break;
         }

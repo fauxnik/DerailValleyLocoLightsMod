@@ -39,6 +39,11 @@ namespace LocoLightsMod
             UpdateLights();
 		}
 
+        private float GetDirectionalScale(LocoLightData datum)
+		{
+            return Direction > 0.55 ? datum.scaleFwd : Direction < 0.45 ? datum.scaleRev : datum.scaleNtl;
+        }
+
         private void UpdateFlickerers()
 		{
             Debug.Log("updating flickerers (direction=" + Direction + ")");
@@ -46,7 +51,7 @@ namespace LocoLightsMod
 			{
                 LocoLightData datum = exterior[i];
                 if (flickerers[i] != null) { Main.Update -= flickerers[i]; }
-                float dirScale = Direction > 0.55 ? datum.scaleFwd : Direction < 0.45 ? datum.scaleRev : datum.scaleNtl;
+                float dirScale = GetDirectionalScale(datum);
                 flickerers[i] = FlickerLight(lights[i], datum.min, datum.max, datum.rate, dirScale);
             }
             if (cabFlickerer != null) { Main.Update -= cabFlickerer; }
@@ -79,9 +84,11 @@ namespace LocoLightsMod
                 Renderer renderer = renderers[i];
                 Light light = lights[i];
                 Action<float> flickerer = flickerers[i];
+                Color c = light.color;
 
-                renderer.enabled = IsOn;
                 light.enabled = IsOn;
+                renderer.enabled = IsOn;
+                renderer.material.SetColor("_EmissionColor", new Vector4(c.r, c.g, c.b, 0) * 200f);
 
                 if (IsOn) { Main.Update += flickerer; }
                 else { Main.Update -= flickerer; }
@@ -144,7 +151,7 @@ namespace LocoLightsMod
                     go.transform.localScale = new Vector3(0.28f, 0.28f, 0.05f);
                     r = go.GetComponent<Renderer>();
                     r.material.color = new Color32(255, 255, 255, 0);
-                    StandardShaderUtils.ChangeRenderMode(r.material, StandardShaderUtils.BlendMode.Transparent);
+                    StandardShaderUtils.ChangeRenderMode(r.material, StandardShaderUtils.BlendMode.Emission);
                     r.enabled = false;
                     l = go.AddComponent<Light>();
                     l.shadows = LightShadows.Soft;
@@ -155,7 +162,7 @@ namespace LocoLightsMod
                     l.range = 98;
                     l.enabled = false;
 
-                    go.transform.position += car.transform.forward * 10.96f;
+                    go.transform.position += car.transform.forward * 10.86f;
                     go.transform.position += car.transform.up * 3.58f;
 
                     go.transform.SetParent(car.transform, true);
@@ -183,7 +190,7 @@ namespace LocoLightsMod
                     go.transform.localScale = new Vector3(0.21f, 0.21f, 0.05f);
                     r = go.GetComponent<Renderer>();
                     r.material.color = new Color32(255, 255, 255, 0);
-                    StandardShaderUtils.ChangeRenderMode(r.material, StandardShaderUtils.BlendMode.Transparent);
+                    StandardShaderUtils.ChangeRenderMode(r.material, StandardShaderUtils.BlendMode.Emission);
                     r.enabled = false;
                     l = go.AddComponent<Light>();
                     l.shadows = LightShadows.Soft;
@@ -195,7 +202,7 @@ namespace LocoLightsMod
                     l.enabled = false;
 
                     offsetX = 0.65f;
-                    go.transform.position += car.transform.forward * 3.235f;
+                    go.transform.position += car.transform.forward * 3.175f;
                     go.transform.position += car.transform.up * 1.528f;
                     go.transform.position += -car.transform.right * offsetX;
 
@@ -218,7 +225,7 @@ namespace LocoLightsMod
                     (l = go.GetComponent<Light>()).enabled = false;
 
                     offsetX = 0.65f;
-                    go.transform.position += -car.transform.forward * 3.227f;
+                    go.transform.position += -car.transform.forward * 3.167f;
                     go.transform.position += car.transform.up * 1.928f;
                     go.transform.position += -car.transform.right * offsetX;
 
@@ -258,8 +265,7 @@ namespace LocoLightsMod
                     go.transform.rotation = Quaternion.Euler(euler.x + 10f, euler.y, euler.z);
                     go.transform.localScale = new Vector3(0.19f, 0.19f, 0.05f);
                     r = go.GetComponent<Renderer>();
-                    r.material.color = new Color32(255, 255, 255, 0);
-                    StandardShaderUtils.ChangeRenderMode(r.material, StandardShaderUtils.BlendMode.Transparent);
+                    StandardShaderUtils.ChangeRenderMode(r.material, StandardShaderUtils.BlendMode.Emission);
                     r.enabled = false;
                     l = go.AddComponent<Light>();
                     l.shadows = LightShadows.Soft;
@@ -271,7 +277,7 @@ namespace LocoLightsMod
                     l.enabled = false;
 
                     offsetY = 3.765f;
-                    offsetZ = 7.168f;
+                    offsetZ = 7.128f;
                     go.transform.position += car.transform.forward * offsetZ;
                     go.transform.position += car.transform.up * offsetY;
 
@@ -288,7 +294,7 @@ namespace LocoLightsMod
 
                     offsetX = 0.6115f;
                     offsetθ = 0; // 13.5f;
-                    go.transform.position += car.transform.forward * (8.368f - offsetZ);
+                    go.transform.position += car.transform.forward * (8.328f - offsetZ);
                     go.transform.position += car.transform.up * (2.007f - offsetY);
                     go.transform.position += -car.transform.right * offsetX;
                     go.transform.rotation = Quaternion.Euler(euler.x + 7.5f, euler.y - offsetθ, euler.z);
@@ -317,7 +323,7 @@ namespace LocoLightsMod
                     l.range = 98;
 
                     offsetY = 3.43f;
-                    offsetZ = 8.27f;
+                    offsetZ = 8.23f;
                     go.transform.position += -car.transform.forward * offsetZ;
                     go.transform.position += car.transform.up * offsetY;
                     go.transform.localScale = new Vector3(0.21f, 0.21f, 0.05f);
@@ -335,10 +341,10 @@ namespace LocoLightsMod
 
                     offsetX = 0.615f;
                     offsetθ = 0;
-                    go.transform.position += -car.transform.forward * (8.237f - offsetZ);
+                    go.transform.position += -car.transform.forward * (8.197f - offsetZ);
                     go.transform.position += car.transform.up * (2.007f - offsetY);
                     go.transform.position += -car.transform.right * offsetX;
-                    go.transform.rotation = Quaternion.Euler(euler.x + 7.5f, euler.y + offsetθ, euler.z);
+                    go.transform.rotation = Quaternion.Euler(euler.x + 7.5f, euler.y + 180f + offsetθ, euler.z);
                     go.transform.localScale = new Vector3(0.165f, 0.165f, 0.05f);
 
                     go.transform.SetParent(car.transform, true);
@@ -350,7 +356,7 @@ namespace LocoLightsMod
                     (l = go.GetComponent<Light>()).enabled = false;
 
                     go.transform.position += car.transform.right * 2f * offsetX;
-                    go.transform.rotation = Quaternion.Euler(euler.x + 7.5f, euler.y - offsetθ, euler.z);
+                    go.transform.rotation = Quaternion.Euler(euler.x + 7.5f, euler.y + 180f - offsetθ, euler.z);
 
                     go.transform.SetParent(car.transform, true);
 
