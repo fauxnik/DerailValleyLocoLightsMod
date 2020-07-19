@@ -179,7 +179,7 @@ namespace LocoLightsMod
                         new LocoLightData(LocoLightType.RFDL, 4f, 1f, 1.75f, 1f, 0.15f, 0.35f),
                         new LocoLightData(LocoLightType.LRDL, 4f, 1f, 1.75f, 0.15f, 1f, 0.35f),
                         new LocoLightData(LocoLightType.RRDL, 4f, 1f, 1.75f, 0.15f, 1f, 0.35f)
-                    }, new LocoLightData(LocoLightType.cab, 2f, 0.075f, 0.1f));
+                    }, new LocoLightData(LocoLightType.cab, 2f, 0.1f, 0.15f));
 
                     // Left Front Ditch Light
                     go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -255,7 +255,7 @@ namespace LocoLightsMod
                         new LocoLightData(LocoLightType.RHL, 4f, 1.25f, 2f, 0.15f, 1f, 0.35f),
                         new LocoLightData(LocoLightType.LRDL, 4f, 1f, 1.75f, 0.15f, 1f, 0.35f),
                         new LocoLightData(LocoLightType.RRDL, 4f, 1f, 1.75f, 0.15f, 1f, 0.35f)
-                    }, new LocoLightData(LocoLightType.cab, 2f, 0.45f, 0.6f));
+                    }, new LocoLightData(LocoLightType.cab, 2f, 0.375f, 0.5f));
 
                     // Front Head Light
                     go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
