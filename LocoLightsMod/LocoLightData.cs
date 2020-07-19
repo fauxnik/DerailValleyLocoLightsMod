@@ -1,4 +1,6 @@
-﻿namespace LocoLightsMod
+﻿using UnityEngine;
+
+namespace LocoLightsMod
 {
 	public struct LocoLightData
 	{
@@ -22,9 +24,9 @@
 			this.type = type;
 			this.min = brightnessMin;
 			this.max = brightnessMax;
-			this.scaleFwd = scaleFwd;
-			this.scaleRev = scaleRev;
-			this.scaleNtl = scaleNtl;
+			this.scaleFwd = Mathf.Clamp01(scaleFwd);
+			this.scaleRev = Mathf.Clamp01(scaleRev);
+			this.scaleNtl = Mathf.Clamp01(scaleNtl);
 			this.rate = rate;
 		}
 	}
