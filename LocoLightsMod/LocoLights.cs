@@ -168,10 +168,10 @@ namespace LocoLightsMod
                     car.transform.gameObject.AddComponent<LocoLights>();
                     car.transform.gameObject.GetComponent<LocoLights>().Init(car, new LocoLightData[]
                     {
-                        new LocoLightData(LocoLightType.LFDL, 4f, 1f, 1.75f, 1f, 0.35f, 0.35f),
-                        new LocoLightData(LocoLightType.RFDL, 4f, 1f, 1.75f, 1f, 0.35f, 0.35f),
-                        new LocoLightData(LocoLightType.LRDL, 4f, 1f, 1.75f, 0.35f, 1f, 0.35f),
-                        new LocoLightData(LocoLightType.RRDL, 4f, 1f, 1.75f, 0.35f, 1f, 0.35f)
+                        new LocoLightData(LocoLightType.LFDL, 4f, 1f, 1.75f, 1f, 0.15f, 0.35f),
+                        new LocoLightData(LocoLightType.RFDL, 4f, 1f, 1.75f, 1f, 0.15f, 0.35f),
+                        new LocoLightData(LocoLightType.LRDL, 4f, 1f, 1.75f, 0.15f, 1f, 0.35f),
+                        new LocoLightData(LocoLightType.RRDL, 4f, 1f, 1.75f, 0.15f, 1f, 0.35f)
                     }, new LocoLightData(LocoLightType.cab, 2f, 0.075f, 0.1f));
 
                     // Left Front Ditch Light
@@ -191,7 +191,7 @@ namespace LocoLightsMod
                     l.innerSpotAngle = 17;
                     l.spotAngle = 51;
                     l.color = new Color32(255, 251, 225, 255);
-                    l.range = 39;
+                    l.range = 52;
                     l.enabled = false;
 
                     offsetX = 0.65f;
@@ -242,12 +242,12 @@ namespace LocoLightsMod
                     car.transform.gameObject.AddComponent<LocoLights>();
                     car.transform.gameObject.GetComponent<LocoLights>().Init(car, new LocoLightData[]
                     {
-                        new LocoLightData(LocoLightType.FHL, 4f, 1.25f, 2f, 1f, 0.35f, 0.35f),
-                        new LocoLightData(LocoLightType.LFDL, 4f, 1f, 1.75f, 1f, 0.35f, 0.35f),
-                        new LocoLightData(LocoLightType.RFDL, 4f, 1f, 1.75f, 1f, 0.35f, 0.35f),
-                        new LocoLightData(LocoLightType.RHL, 4f, 1.25f, 2f, 0.35f, 1f, 0.35f),
-                        new LocoLightData(LocoLightType.LRDL, 4f, 1f, 1.75f, 0.35f, 1f, 0.35f),
-                        new LocoLightData(LocoLightType.RRDL, 4f, 1f, 1.75f, 0.35f, 1f, 0.35f)
+                        new LocoLightData(LocoLightType.FHL, 4f, 1.25f, 2f, 1f, 0.15f, 0.35f),
+                        new LocoLightData(LocoLightType.LFDL, 4f, 1f, 1.75f, 1f, 0.15f, 0.35f),
+                        new LocoLightData(LocoLightType.RFDL, 4f, 1f, 1.75f, 1f, 0.15f, 0.35f),
+                        new LocoLightData(LocoLightType.RHL, 4f, 1.25f, 2f, 0.15f, 1f, 0.35f),
+                        new LocoLightData(LocoLightType.LRDL, 4f, 1f, 1.75f, 0.15f, 1f, 0.35f),
+                        new LocoLightData(LocoLightType.RRDL, 4f, 1f, 1.75f, 0.15f, 1f, 0.35f)
                     }, new LocoLightData(LocoLightType.cab, 2f, 0.45f, 0.6f));
 
                     // Front Head Light
