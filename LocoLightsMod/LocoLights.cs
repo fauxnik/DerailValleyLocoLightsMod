@@ -39,9 +39,9 @@ namespace LocoLightsMod
             UpdateLights();
 		}
 
-        private float GetDirectionalScale(LocoLightData datum)
+        private float GetDirectionalScalar(LocoLightData datum)
 		{
-            return Direction > 0.55 ? datum.scaleFwd : Direction < 0.45 ? datum.scaleRev : datum.scaleNtl;
+            return Direction > 0.55 ? datum.fwd : Direction < 0.45 ? datum.rev : datum.ntl;
         }
 
         private void UpdateFlickerers()
@@ -51,8 +51,8 @@ namespace LocoLightsMod
 			{
                 LocoLightData datum = exterior[i];
                 if (flickerers[i] != null) { Main.Update -= flickerers[i]; }
-                float dirScale = GetDirectionalScale(datum);
-                flickerers[i] = FlickerLight(lights[i], datum.min, datum.max, datum.rate, dirScale);
+                float dirScalar = GetDirectionalScalar(datum);
+                flickerers[i] = FlickerLight(lights[i], datum.min, datum.max, datum.rate, dirScalar);
             }
             if (cabFlickerer != null) { Main.Update -= cabFlickerer; }
             cabFlickerer = FlickerLight(cabLight.GetComponent<Light>(), cab.min, cab.max, cab.rate);
@@ -87,7 +87,7 @@ namespace LocoLightsMod
                 Color c = light.color;
 
                 light.enabled = IsOn;
-                renderer.enabled = IsOn;
+                renderer.enabled = IsOn && GetDirectionalScalar(exterior[i]) > 0f;
                 renderer.material.SetColor("_EmissionColor", new Vector4(c.r, c.g, c.b, 0) * 200f);
 
                 if (IsOn) { Main.Update += flickerer; }
@@ -100,13 +100,13 @@ namespace LocoLightsMod
             else { Main.Update -= cabFlickerer; }
         }
 
-        private Action<float> FlickerLight(Light light, float min = 0f, float max = 1f, float rate = 1f, float scale = 1f)
+        private Action<float> FlickerLight(Light light, float min = 0f, float max = 1f, float rate = 1f, float scalar = 1f)
         {
             float t = 100f * (float)new System.Random().NextDouble();
 
             Action<float> flicker = delta =>
             {
-                light.intensity = scale * ((max - min) * Mathf.PerlinNoise(t, 0f) + min);
+                light.intensity = scalar * ((max - min) * Mathf.PerlinNoise(t, 0f) + min);
 
                 t += delta * rate;
             };
@@ -250,11 +250,13 @@ namespace LocoLightsMod
                     car.transform.gameObject.GetComponent<LocoLights>().Init(car, new LocoLightData[]
                     {
                         new LocoLightData(LocoLightType.FHL, 4f, 1.25f, 2f, 1f, 0.15f, 0.15f),
+                        new LocoLightData(LocoLightType.RHL, 4f, 1.25f, 2f, 0.15f, 1f, 0.15f),
                         new LocoLightData(LocoLightType.LFDL, 4f, 1f, 1.75f, 1f, 0.15f, 0.15f),
                         new LocoLightData(LocoLightType.RFDL, 4f, 1f, 1.75f, 1f, 0.15f, 0.15f),
-                        new LocoLightData(LocoLightType.RHL, 4f, 1.25f, 2f, 0.15f, 1f, 0.15f),
                         new LocoLightData(LocoLightType.LRDL, 4f, 1f, 1.75f, 0.15f, 1f, 0.15f),
                         new LocoLightData(LocoLightType.RRDL, 4f, 1f, 1.75f, 0.15f, 1f, 0.15f)
+                        //new LocoLightData(LocoLightType.FWL, 3f, 0.5f, 0.6f, 0f, 1f, 0f),
+                        //new LocoLightData(LocoLightType.RWL, 3f, 0.5f, 0.6f, 1f, 0f, 0f)
                     }, new LocoLightData(LocoLightType.cab, 2f, 0.375f, 0.5f));
 
                     // Front Head Light
@@ -359,6 +361,36 @@ namespace LocoLightsMod
                     go.transform.rotation = Quaternion.Euler(euler.x + 7.5f, euler.y + 180f - offsetθ, euler.z);
 
                     go.transform.SetParent(car.transform, true);
+
+                    /*
+                    // Rear Warning Light
+                    go = GameObject.Instantiate(go, car.transform.position, Quaternion.Euler(euler.x, euler.y + 180f, euler.z));
+                    go.name = LocoLightType.RWL.ToString();
+                    (r = go.GetComponent<Renderer>()).enabled = false;
+                    (l = go.GetComponent<Light>()).enabled = false;
+                    l.color = Color.red;
+                    l.innerSpotAngle = 42;
+                    l.spotAngle = 84;
+                    l.range = 26;
+
+                    go.transform.position += -car.transform.forward * (offsetZ + 0.053f);
+                    go.transform.position += car.transform.up * 3.117f;
+                    go.transform.localScale = new Vector3(0.21f, 0.21f, 0.05f);
+
+                    go.transform.SetParent(car.transform, true);
+
+                    // Front Warning Light
+                    go = GameObject.Instantiate(go, car.transform.position, car.transform.rotation);
+                    go.name = LocoLightType.FWL.ToString();
+                    (r = go.GetComponent<Renderer>()).enabled = false;
+                    (l = go.GetComponent<Light>()).enabled = false;
+
+                    go.transform.position += car.transform.forward * 8.488f;
+                    go.transform.position += car.transform.up * 2.83f;
+                    go.transform.localScale = new Vector3(0.21f, 0.21f, 0.05f);
+
+                    go.transform.SetParent(car.transform, true);
+                    */
 
                     // this is dumb, but DE6 cab light is fucked
                     Transform cabLight = car.transform.Find("[cab light]");

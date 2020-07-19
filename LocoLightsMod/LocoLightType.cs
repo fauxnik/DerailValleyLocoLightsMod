@@ -4,9 +4,11 @@
     {
         cab,
         FHL,
+        FWL,
         LFDL,
         RFDL,
         RHL,
+        RWL,
         LRDL,
         RRDL,
     }

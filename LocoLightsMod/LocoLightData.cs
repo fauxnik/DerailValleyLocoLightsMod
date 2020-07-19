@@ -7,9 +7,9 @@ namespace LocoLightsMod
 		public readonly LocoLightType type;
 		public readonly float min;
 		public readonly float max;
-		public readonly float scaleFwd;
-		public readonly float scaleRev;
-		public readonly float scaleNtl;
+		public readonly float fwd;
+		public readonly float rev;
+		public readonly float ntl;
 		public readonly float rate;
 
 		public LocoLightData(
@@ -17,16 +17,16 @@ namespace LocoLightsMod
 			float rate,
 			float brightnessMin,
 			float brightnessMax,
-			float scaleFwd = 1f,
-			float scaleRev = 1f,
-			float scaleNtl = 1f)
+			float scalarFwd = 1f,
+			float scalarRev = 1f,
+			float scalarNtl = 1f)
 		{
 			this.type = type;
 			this.min = brightnessMin;
 			this.max = brightnessMax;
-			this.scaleFwd = Mathf.Clamp01(scaleFwd);
-			this.scaleRev = Mathf.Clamp01(scaleRev);
-			this.scaleNtl = Mathf.Clamp01(scaleNtl);
+			this.fwd = Mathf.Clamp01(scalarFwd);
+			this.rev = Mathf.Clamp01(scalarRev);
+			this.ntl = Mathf.Clamp01(scalarNtl);
 			this.rate = rate;
 		}
 	}
