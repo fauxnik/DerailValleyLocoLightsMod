@@ -260,8 +260,8 @@ namespace LocoLightsMod
                     (r = go.GetComponent<Renderer>()).enabled = false;
                     (l = go.GetComponent<Light>()).enabled = false;
                     l.color = new Color32(255, 64, 64, 0);
-                    l.innerSpotAngle = 42;
-                    l.spotAngle = 84;
+                    l.innerSpotAngle = 32;
+                    l.spotAngle = 64;
                     l.range = 26;
 
                     go.transform.position += -car.transform.forward * 3.167f;
@@ -419,8 +419,8 @@ namespace LocoLightsMod
                     (r = go.GetComponent<Renderer>()).enabled = false;
                     (l = go.GetComponent<Light>()).enabled = false;
                     l.color = new Color32(255, 64, 64, 0);
-                    l.innerSpotAngle = 42;
-                    l.spotAngle = 84;
+                    l.innerSpotAngle = 32;
+                    l.spotAngle = 64;
                     l.range = 26;
 
                     go.transform.position += -car.transform.forward * offsetZ;
