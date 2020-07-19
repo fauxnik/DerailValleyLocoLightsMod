@@ -143,7 +143,7 @@ namespace LocoLightsMod
                     go.transform.rotation = Quaternion.Euler(euler.x + 10f, euler.y, euler.z);
                     go.transform.localScale = new Vector3(0.28f, 0.28f, 0.05f);
                     r = go.GetComponent<Renderer>();
-                    r.material.color = new Color32(255, 255, 255, 150);
+                    r.material.color = new Color32(255, 255, 255, 0);
                     StandardShaderUtils.ChangeRenderMode(r.material, StandardShaderUtils.BlendMode.Transparent);
                     r.enabled = false;
                     l = go.AddComponent<Light>();
@@ -182,7 +182,7 @@ namespace LocoLightsMod
                     go.transform.rotation = Quaternion.Euler(euler.x + 5f, euler.y, euler.z);
                     go.transform.localScale = new Vector3(0.21f, 0.21f, 0.05f);
                     r = go.GetComponent<Renderer>();
-                    r.material.color = new Color32(255, 255, 255, 150);
+                    r.material.color = new Color32(255, 255, 255, 0);
                     StandardShaderUtils.ChangeRenderMode(r.material, StandardShaderUtils.BlendMode.Transparent);
                     r.enabled = false;
                     l = go.AddComponent<Light>();
@@ -258,7 +258,7 @@ namespace LocoLightsMod
                     go.transform.rotation = Quaternion.Euler(euler.x + 10f, euler.y, euler.z);
                     go.transform.localScale = new Vector3(0.19f, 0.19f, 0.05f);
                     r = go.GetComponent<Renderer>();
-                    r.material.color = new Color32(255, 255, 255, 150);
+                    r.material.color = new Color32(255, 255, 255, 0);
                     StandardShaderUtils.ChangeRenderMode(r.material, StandardShaderUtils.BlendMode.Transparent);
                     r.enabled = false;
                     l = go.AddComponent<Light>();
