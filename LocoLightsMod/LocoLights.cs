@@ -84,11 +84,10 @@ namespace LocoLightsMod
                 Renderer renderer = renderers[i];
                 Light light = lights[i];
                 Action<float> flickerer = flickerers[i];
-                Color c = light.color;
 
                 light.enabled = IsOn;
                 renderer.enabled = IsOn && GetDirectionalScalar(exterior[i]) > 0f;
-                renderer.material.SetColor("_EmissionColor", new Vector4(c.r, c.g, c.b, 0) * 200f);
+                renderer.material.SetColor("_EmissionColor", light.color);
 
                 if (IsOn) { Main.Update += flickerer; }
                 else { Main.Update -= flickerer; }
@@ -158,7 +157,7 @@ namespace LocoLightsMod
                     l.type = LightType.Spot;
                     l.innerSpotAngle = 14;
                     l.spotAngle = 42;
-                    l.color = new Color32(255, 198, 111, 255);
+                    l.color = new Color32(255, 198, 111, 0);
                     l.range = 98;
                     l.enabled = false;
 
@@ -175,11 +174,25 @@ namespace LocoLightsMod
                     car.transform.gameObject.AddComponent<LocoLights>();
                     car.transform.gameObject.GetComponent<LocoLights>().Init(car, new LocoLightData[]
                     {
-                        new LocoLightData(LocoLightType.LFDL, 4f, 1f, 1.75f, 1f, 0.15f, 0.15f),
-                        new LocoLightData(LocoLightType.RFDL, 4f, 1f, 1.75f, 1f, 0.15f, 0.15f),
-                        new LocoLightData(LocoLightType.LRDL, 4f, 1f, 1.75f, 0.15f, 1f, 0.15f),
-                        new LocoLightData(LocoLightType.RRDL, 4f, 1f, 1.75f, 0.15f, 1f, 0.15f)
+                        new LocoLightData(LocoLightType.LFDL, 4f, 1f, 1.75f, 1f, 0f, 0.1f),
+                        new LocoLightData(LocoLightType.RFDL, 4f, 1f, 1.75f, 1f, 0f, 0.1f),
+                        new LocoLightData(LocoLightType.LRDL, 4f, 1f, 1.75f, 0f, 1f, 0.1f),
+                        new LocoLightData(LocoLightType.RRDL, 4f, 1f, 1.75f, 0f, 1f, 0.1f),
+                        new LocoLightData(LocoLightType.FWL, 3f, 0.5f, 0.6f, 0f, 1f, 0f),
+                        new LocoLightData(LocoLightType.RWL, 3f, 0.5f, 0.6f, 1f, 0f, 0f)
                     }, new LocoLightData(LocoLightType.cab, 2f, 0.1f, 0.15f));
+
+                    // make the red lenses transparent
+                    foreach(Renderer rend in car.transform.GetComponentsInChildren<Renderer>())
+					{
+                        foreach(Material mat in rend.materials)
+                        {
+                            if (mat.name == "headlights_red (Instance)")
+                            {
+                                StandardShaderUtils.ChangeRenderMode(mat, StandardShaderUtils.BlendMode.Transparent);
+                            }
+						}
+					}
 
                     // Left Front Ditch Light
                     go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -197,7 +210,7 @@ namespace LocoLightsMod
                     l.type = LightType.Spot;
                     l.innerSpotAngle = 17;
                     l.spotAngle = 51;
-                    l.color = new Color32(255, 251, 225, 255);
+                    l.color = new Color32(255, 251, 225, 0);
                     l.range = 52;
                     l.enabled = false;
 
@@ -241,6 +254,32 @@ namespace LocoLightsMod
 
                     go.transform.SetParent(car.transform, true);
 
+                    // Rear Warning Light
+                    go = GameObject.Instantiate(go, car.transform.position, Quaternion.Euler(euler.x, euler.y + 180f, euler.z));
+                    go.name = LocoLightType.RWL.ToString();
+                    (r = go.GetComponent<Renderer>()).enabled = false;
+                    (l = go.GetComponent<Light>()).enabled = false;
+                    l.color = new Color32(255, 64, 64, 0);
+                    l.innerSpotAngle = 42;
+                    l.spotAngle = 84;
+                    l.range = 26;
+
+                    go.transform.position += -car.transform.forward * 3.167f;
+                    go.transform.position += car.transform.up * 2.47f;
+
+                    go.transform.SetParent(car.transform, true);
+
+                    // Front Warning Light
+                    go = GameObject.Instantiate(go, car.transform.position, car.transform.rotation);
+                    go.name = LocoLightType.FWL.ToString();
+                    (r = go.GetComponent<Renderer>()).enabled = false;
+                    (l = go.GetComponent<Light>()).enabled = false;
+
+                    go.transform.position += car.transform.forward * 3.135f;
+                    go.transform.position += car.transform.up * 2.82f;
+
+                    go.transform.SetParent(car.transform, true);
+
                     // default cab light: Color32(255, 253, 240, 255)
                     car.transform.Find("[cab light]").GetComponent<Light>().color = new Color32(255, 251, 225, 255);
                     break;
@@ -249,15 +288,27 @@ namespace LocoLightsMod
                     car.transform.gameObject.AddComponent<LocoLights>();
                     car.transform.gameObject.GetComponent<LocoLights>().Init(car, new LocoLightData[]
                     {
-                        new LocoLightData(LocoLightType.FHL, 4f, 1.25f, 2f, 1f, 0.15f, 0.15f),
-                        new LocoLightData(LocoLightType.RHL, 4f, 1.25f, 2f, 0.15f, 1f, 0.15f),
-                        new LocoLightData(LocoLightType.LFDL, 4f, 1f, 1.75f, 1f, 0.15f, 0.15f),
-                        new LocoLightData(LocoLightType.RFDL, 4f, 1f, 1.75f, 1f, 0.15f, 0.15f),
-                        new LocoLightData(LocoLightType.LRDL, 4f, 1f, 1.75f, 0.15f, 1f, 0.15f),
-                        new LocoLightData(LocoLightType.RRDL, 4f, 1f, 1.75f, 0.15f, 1f, 0.15f)
-                        //new LocoLightData(LocoLightType.FWL, 3f, 0.5f, 0.6f, 0f, 1f, 0f),
-                        //new LocoLightData(LocoLightType.RWL, 3f, 0.5f, 0.6f, 1f, 0f, 0f)
+                        new LocoLightData(LocoLightType.FHL, 4f, 1.25f, 2f, 1f, 0f, 0.1f),
+                        new LocoLightData(LocoLightType.RHL, 4f, 1.25f, 2f, 0f, 1f, 0.1f),
+                        new LocoLightData(LocoLightType.LFDL, 4f, 1f, 1.75f, 1f, 0f, 0.1f),
+                        new LocoLightData(LocoLightType.RFDL, 4f, 1f, 1.75f, 1f, 0f, 0.1f),
+                        new LocoLightData(LocoLightType.LRDL, 4f, 1f, 1.75f, 0f, 1f, 0.1f),
+                        new LocoLightData(LocoLightType.RRDL, 4f, 1f, 1.75f, 0f, 1f, 0.1f),
+                        new LocoLightData(LocoLightType.FWL, 3f, 0.5f, 0.6f, 0f, 1f, 0f),
+                        new LocoLightData(LocoLightType.RWL, 3f, 0.5f, 0.6f, 1f, 0f, 0f)
                     }, new LocoLightData(LocoLightType.cab, 2f, 0.375f, 0.5f));
+
+                    // make the red lenses transparent
+                    foreach (Renderer rend in car.transform.GetComponentsInChildren<Renderer>())
+                    {
+                        foreach (Material mat in rend.materials)
+                        {
+                            if (mat.name == "headlights_red (Instance)")
+                            {
+                                StandardShaderUtils.ChangeRenderMode(mat, StandardShaderUtils.BlendMode.Transparent);
+                            }
+                        }
+                    }
 
                     // Front Head Light
                     go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -274,7 +325,7 @@ namespace LocoLightsMod
                     l.type = LightType.Spot;
                     l.innerSpotAngle = 14;
                     l.spotAngle = 42;
-                    l.color = new Color32(255, 251, 225, 255);
+                    l.color = new Color32(255, 251, 225, 0);
                     l.range = 98;
                     l.enabled = false;
 
@@ -362,18 +413,17 @@ namespace LocoLightsMod
 
                     go.transform.SetParent(car.transform, true);
 
-                    /*
                     // Rear Warning Light
                     go = GameObject.Instantiate(go, car.transform.position, Quaternion.Euler(euler.x, euler.y + 180f, euler.z));
                     go.name = LocoLightType.RWL.ToString();
                     (r = go.GetComponent<Renderer>()).enabled = false;
                     (l = go.GetComponent<Light>()).enabled = false;
-                    l.color = Color.red;
+                    l.color = new Color32(255, 64, 64, 0);
                     l.innerSpotAngle = 42;
                     l.spotAngle = 84;
                     l.range = 26;
 
-                    go.transform.position += -car.transform.forward * (offsetZ + 0.053f);
+                    go.transform.position += -car.transform.forward * offsetZ;
                     go.transform.position += car.transform.up * 3.117f;
                     go.transform.localScale = new Vector3(0.21f, 0.21f, 0.05f);
 
@@ -385,13 +435,12 @@ namespace LocoLightsMod
                     (r = go.GetComponent<Renderer>()).enabled = false;
                     (l = go.GetComponent<Light>()).enabled = false;
 
-                    go.transform.position += car.transform.forward * 8.488f;
+                    go.transform.position += car.transform.forward * 8.448f;
                     go.transform.position += car.transform.up * 2.83f;
                     go.transform.localScale = new Vector3(0.21f, 0.21f, 0.05f);
 
                     go.transform.SetParent(car.transform, true);
-                    */
-
+                    
                     // this is dumb, but DE6 cab light is fucked
                     Transform cabLight = car.transform.Find("[cab light]");
                     go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
