@@ -2,7 +2,7 @@
     "Id": "LocoLightsMod",
     "DisplayName": "Locomotive Lights",
     "Author": "fauxnik",
-    "Version": "1.0.0",
+    "Version": "1.0.1",
     "AssemblyName": "LocoLightsMod.dll",
     "EntryMethod": "LocoLightsMod.Main.Load",
     "Repository": "https://raw.githubusercontent.com/fauxnik/DerailValleyLocoLightsMod/master/Repository.json"
