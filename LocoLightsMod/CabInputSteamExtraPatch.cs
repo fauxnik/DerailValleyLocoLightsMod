@@ -33,7 +33,7 @@ namespace LocoLightsMod
 
             lightCtrl.ValueChanged += (e =>
             {
-                if (locoLights != null) { locoLights.SetLights(e.newValue); }
+                if (locoLights != null) { locoLights.SetLights(e.newValue > 0.5f); }
             });
         }
     }

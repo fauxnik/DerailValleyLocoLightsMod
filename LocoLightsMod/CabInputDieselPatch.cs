@@ -25,8 +25,6 @@ namespace LocoLightsMod
             var rotary01 = GameObjectUtils.FindObject(instance.transform.gameObject, "C headlights dash_rotary01");
             DV.CabControls.ControlImplBase lightCtrl = rotary01
                 .gameObject.GetComponent<DV.CabControls.ControlImplBase>();
-            var reverser = GameObjectUtils.FindObject(instance.transform.gameObject, "C reverser");
-            DV.CabControls.ControlImplBase revCtrl = reverser.gameObject.GetComponent<DV.CabControls.ControlImplBase>();
 
             if (PlayerManager.Car.carType == TrainCarType.LocoDiesel)
                 locoLights = PlayerManager.Car.GetComponent<LocoLights>();
@@ -35,12 +33,7 @@ namespace LocoLightsMod
 
             lightCtrl.ValueChanged += (e =>
             {
-                if (locoLights != null) { locoLights.SetLights(e.newValue); }
-            });
-
-            revCtrl.ValueChanged += (e =>
-            {
-                if (locoLights != null) { locoLights.SetDirection(e.newValue); }
+                if (locoLights != null) { locoLights.SetLights(e.newValue > 0.5f); }
             });
         }
     }

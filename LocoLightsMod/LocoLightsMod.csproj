@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="CabInputDieselPatch.cs" />
     <Compile Include="CabInputShunterPatch.cs" />
+    <Compile Include="LocoControllerBasePatch.cs" />
     <Compile Include="GameObjectUtils.cs" />
     <Compile Include="LocoLightData.cs" />
     <Compile Include="LocoLightType.cs" />

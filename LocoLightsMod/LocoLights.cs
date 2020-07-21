@@ -26,9 +26,25 @@ namespace LocoLightsMod
             Direction = 0.5f;
         }
 
-        public void SetLights(float ctrlValue)
+        private void LazyInit()
 		{
-            IsOn = ctrlValue > 0.5f;
+            renderers = new Renderer[exterior.Length];
+            lights = new Light[exterior.Length];
+            flickerers = new Action<float>[exterior.Length];
+
+            for (int i = 0; i < exterior.Length; i++)
+            {
+                LocoLightData datum = exterior[i];
+                renderers[i] = car.transform.Find(datum.type.ToString()).gameObject.GetComponent<Renderer>();
+                lights[i] = renderers[i].transform.gameObject.GetComponent<Light>();
+            }
+
+            UpdateFlickerers();
+        }
+
+        public void SetLights(bool isOn)
+		{
+            IsOn = isOn;
             UpdateLights();
 		}
 
@@ -41,13 +57,20 @@ namespace LocoLightsMod
 
         private float GetDirectionalScalar(LocoLightData datum)
 		{
-            return Direction > 0.55 ? datum.fwd : Direction < 0.45 ? datum.rev : datum.ntl;
+            return Direction > 0.05 ? datum.fwd : Direction < -0.05 ? datum.rev : datum.ntl;
         }
 
         private void UpdateFlickerers()
 		{
+            if (car == null || exterior == null || cabLight == null) { return; }
             Debug.Log("updating flickerers (direction=" + Direction + ")");
-            for(int i = 0; i < exterior.Length; i++)
+
+            if (renderers == null)
+            {
+                LazyInit();
+            }
+
+            for (int i = 0; i < exterior.Length; i++)
 			{
                 LocoLightData datum = exterior[i];
                 if (flickerers[i] != null) { Main.Update -= flickerers[i]; }
@@ -65,18 +88,7 @@ namespace LocoLightsMod
 
             if (renderers == null)
             {
-                renderers = new Renderer[exterior.Length];
-                lights = new Light[exterior.Length];
-                flickerers = new Action<float>[exterior.Length];
-
-                for (int i = 0; i < exterior.Length; i++)
-				{
-                    LocoLightData datum = exterior[i];
-                    renderers[i] = car.transform.Find(datum.type.ToString()).gameObject.GetComponent<Renderer>();
-                    lights[i] = renderers[i].transform.gameObject.GetComponent<Light>();
-				}
-
-                UpdateFlickerers();
+                LazyInit();
             }
 
             for(int i = 0; i < renderers.Length; i++)
