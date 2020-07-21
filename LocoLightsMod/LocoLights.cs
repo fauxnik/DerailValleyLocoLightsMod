@@ -275,6 +275,7 @@ namespace LocoLightsMod
                     l.innerSpotAngle = 32;
                     l.spotAngle = 64;
                     l.range = 26;
+                    r.material.color = l.color;
 
                     go.transform.position += -car.transform.forward * 3.167f;
                     go.transform.position += car.transform.up * 2.47f;
@@ -434,6 +435,7 @@ namespace LocoLightsMod
                     l.innerSpotAngle = 32;
                     l.spotAngle = 64;
                     l.range = 26;
+                    r.material.color = l.color;
 
                     go.transform.position += -car.transform.forward * offsetZ;
                     go.transform.position += car.transform.up * 3.117f;
