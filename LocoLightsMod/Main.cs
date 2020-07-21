@@ -32,11 +32,8 @@ namespace LocoLightsMod
         {
             if (!enabled) { return; }
 
-            if (Update != null)
-			{
-                Update(delta);
-			}
-        }
+			Update?.Invoke(delta);
+		}
 
         [HarmonyPatch(typeof(TrainCar), "Start")]
         internal class LocoSteamHeavyPatch
