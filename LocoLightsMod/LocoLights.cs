@@ -23,7 +23,7 @@ namespace LocoLightsMod
             this.exterior = exterior;
             this.cab = cab;
             cabLight = car.transform.Find("[cab light override]") ?? car.transform.Find("[cab light]");
-            Direction = 0.5f;
+            Direction = 0f;
         }
 
         private void LazyInit()
@@ -57,7 +57,7 @@ namespace LocoLightsMod
 
         private float GetDirectionalScalar(LocoLightData datum)
 		{
-            return Direction > 0.05 ? datum.fwd : Direction < -0.05 ? datum.rev : datum.ntl;
+            return Direction > 0.05f ? datum.fwd : Direction < -0.05f ? datum.rev : datum.ntl;
         }
 
         private void UpdateFlickerers()
