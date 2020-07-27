@@ -2,6 +2,11 @@
     "Releases": [
         {
             "Id": "LocoLightsMod",
+            "Version": "1.0.2",
+            "DownloadUrl": "https://github.com/fauxnik/DerailValleyLocoLightsMod/releases/download/v1.0.2/LocoLightsMod.zip"
+        },
+        {
+            "Id": "LocoLightsMod",
             "Version": "1.0.1",
             "DownloadUrl": "https://github.com/fauxnik/DerailValleyLocoLightsMod/releases/download/v1.0.1/LocoLightsMod.zip"
         },
