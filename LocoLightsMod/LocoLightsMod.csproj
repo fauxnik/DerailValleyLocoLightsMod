@@ -73,6 +73,7 @@
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StandardShaderUtils.cs" />
+    <Compile Include="TrainCarLightDefinitions\CabooseLightDefinitions.cs" />
     <Compile Include="TrainCarLightDefinitions\PassengerCarLightDefinition.cs" />
     <Compile Include="TrainCarLights.cs" />
     <Compile Include="TrainCarPatch.cs" />

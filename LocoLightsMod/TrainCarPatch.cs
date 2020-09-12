@@ -41,6 +41,9 @@ namespace LocoLightsMod
                     case TrainCarType.PassengerRed:
                         PassengerCarLightDefinition.SetupLights(car);
                         break;
+                    case TrainCarType.CabooseRed:
+                        CabooseLightDefinitions.SetupLights(car);
+                        break;
                 }
                 Main.Log($"Created LocoLights for train car {car.ID} ({car.carType})");
             }
