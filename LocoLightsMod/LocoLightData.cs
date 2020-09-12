@@ -4,7 +4,7 @@ namespace LocoLightsMod
 {
 	public struct LocoLightData
 	{
-		public readonly LocoLightType type;
+		public readonly string name;
 		public readonly float min;
 		public readonly float max;
 		public readonly float fwd;
@@ -13,7 +13,7 @@ namespace LocoLightsMod
 		public readonly float rate;
 
 		public LocoLightData(
-			LocoLightType type,
+			string name,
 			float rate,
 			float brightnessMin,
 			float brightnessMax,
@@ -21,7 +21,7 @@ namespace LocoLightsMod
 			float scalarRev = 1f,
 			float scalarNtl = 1f)
 		{
-			this.type = type;
+			this.name = name;
 			this.min = brightnessMin;
 			this.max = brightnessMax;
 			this.fwd = Mathf.Clamp01(scalarFwd);

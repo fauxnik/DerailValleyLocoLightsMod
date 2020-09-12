@@ -8,6 +8,15 @@ namespace LocoLightsMod.LocoLightDefinitions
         {
             if (car == null) { return; }
 
+            string[] extLights = new string[]
+            {
+                "FHL",
+            };
+            string[] intLights = new string[]
+            {
+                "[cab light]",
+            };
+
             GameObject go;
             Renderer r;
             Light l;
@@ -19,15 +28,15 @@ namespace LocoLightsMod.LocoLightDefinitions
                 car,
                 new LocoLightData[]
                 {
-                    new LocoLightData(LocoLightType.FHL, 4f, 0.75f, 1.75f)
+                    new LocoLightData(extLights[0], 4f, 0.75f, 1.75f),
                 },
                 new LocoLightData[] {
-                    new LocoLightData(LocoLightType.cab, 5f, 0.015f, 0.25f)
+                    new LocoLightData(intLights[0], 5f, 0.015f, 0.25f),
                 });
 
             // Front Head Light
             go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            go.name = LocoLightType.FHL.ToString();
+            go.name = extLights[0];
             GameObject.DestroyImmediate(go.GetComponent<Collider>());
             go.transform.position = car.transform.position;
             go.transform.rotation = Quaternion.Euler(euler.x + 10f, euler.y, euler.z);
@@ -51,7 +60,11 @@ namespace LocoLightsMod.LocoLightDefinitions
             go.transform.SetParent(car.transform, true);
 
             // default cab light: Color32(255, 253, 240, 255)
-            car.transform.Find("[cab light]").GetComponent<Light>().color = new Color32(255, 179, 63, 255);
+            go = car.transform.Find("[cab light]").gameObject;
+            go.SetActive(true);
+            l = go.GetComponent<Light>();
+            l.color = new Color32(255, 179, 63, 255);
+            l.enabled = false;
         }
     }
 }

@@ -68,7 +68,6 @@
     <Compile Include="LocoLightDefinitions\DE2LightDefinition.cs" />
     <Compile Include="LocoLightDefinitions\DE6LightDefinition.cs" />
     <Compile Include="LocoLightDefinitions\SH282LightDefinition.cs" />
-    <Compile Include="LocoLightType.cs" />
     <Compile Include="LocoLights.cs" />
     <Compile Include="CabInputSteamExtraPatch.cs" />
     <Compile Include="Main.cs" />
