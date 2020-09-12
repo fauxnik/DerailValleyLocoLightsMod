@@ -214,7 +214,8 @@ namespace LocoLightsMod.LocoLightDefinitions
             l.color = new Color32(255, 251, 225, 255);
             l.range = 6.6f;
             l.enabled = false;
-            go.transform.SetParent(cabLight, false);
+            go.transform.position = cabLight.position - 0.5f * car.transform.up;
+            go.transform.SetParent(car.transform, true);
         }
     }
 }
