@@ -209,6 +209,7 @@ namespace LocoLightsMod.LocoLightDefinitions
             r.enabled = false;
             l = go.AddComponent<Light>();
             l.type = LightType.Point;
+            l.shadows = LightShadows.Hard;
             // default cab light: Color32(255, 253, 240, 255)
             l.color = new Color32(255, 251, 225, 255);
             l.range = 6.6f;

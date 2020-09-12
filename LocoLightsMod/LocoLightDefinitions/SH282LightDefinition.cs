@@ -68,6 +68,7 @@ namespace LocoLightsMod.LocoLightDefinitions
             go = car.transform.Find("[cab light]").gameObject;
             go.SetActive(true);
             l = go.GetComponent<Light>();
+            l.shadows = LightShadows.Hard;
             l.color = new Color32(255, 179, 63, 255);
             l.enabled = false;
         }

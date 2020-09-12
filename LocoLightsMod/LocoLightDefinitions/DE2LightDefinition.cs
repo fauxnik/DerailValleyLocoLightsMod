@@ -154,6 +154,7 @@ namespace LocoLightsMod.LocoLightDefinitions
             go.SetActive(true);
             l = go.GetComponent<Light>();
             l.color = new Color32(255, 251, 225, 255);
+            l.shadows = LightShadows.Hard;
             l.enabled = false;
         }
     }
