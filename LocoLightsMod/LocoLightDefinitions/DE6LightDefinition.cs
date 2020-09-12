@@ -17,7 +17,7 @@ namespace LocoLightsMod.LocoLightDefinitions
         };
         static readonly string[] intLights = new string[]
         {
-                "[cab light override]",
+            "[cab light override]",
         };
 
         public static void SetupLights(TrainCar car)
