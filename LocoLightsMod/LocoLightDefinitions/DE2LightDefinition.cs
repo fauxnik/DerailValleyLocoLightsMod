@@ -4,30 +4,25 @@ namespace LocoLightsMod.LocoLightDefinitions
 {
     internal class DE2LightDefinition
     {
+        static readonly string[] extLights = new string[]
+        {
+            "LFDL",
+            "RFDL",
+            "LRDL",
+            "RRDL",
+            "FWL",
+            "RWL",
+        };
+        static readonly string[] intLights = new string[]
+        {
+                "[cab light]",
+        };
+
         public static void SetupLights(TrainCar car)
         {
             if (car == null) { return; }
 
-            string[] extLights = new string[]
-            {
-                "LFDL",
-                "RFDL",
-                "LRDL",
-                "RRDL",
-                "FWL",
-                "RWL",
-            };
-            string[] intLights = new string[]
-            {
-                "[cab light]",
-            };
-
-            GameObject go;
-            Renderer r;
-            Light l;
-
-            float offsetX;
-            Vector3 euler = car.transform.rotation.eulerAngles;
+            CreateLights(car);
 
             car.transform.gameObject.AddComponent<LocoLights>();
             car.transform.gameObject.GetComponent<LocoLights>().Init(
@@ -56,6 +51,16 @@ namespace LocoLightsMod.LocoLightDefinitions
                     }
                 }
             }
+        }
+
+        private static void CreateLights(TrainCar car)
+        {
+            GameObject go;
+            Renderer r;
+            Light l;
+
+            float offsetX;
+            Vector3 euler = car.transform.rotation.eulerAngles;
 
             // Left Front Ditch Light
             go = GameObject.CreatePrimitive(PrimitiveType.Sphere);

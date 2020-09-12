@@ -50,11 +50,11 @@ namespace LocoLightsMod
         {
             try
             {
-                var locoLights = car.gameObject.GetComponent<LocoLights>();
-                if (locoLights == null) { return; }
+                var tcLights = car.gameObject.GetComponent<TrainCarLights>();
+                if (tcLights == null) { return; }
 
                 Main.Log($"Destroying LocoLights for train car {car.ID}");
-                GameObject.Destroy(locoLights);
+                GameObject.DestroyImmediate(tcLights);
             }
             catch (Exception e) { Main.LogError(e); }
         }
