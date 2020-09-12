@@ -9,7 +9,7 @@ namespace LocoLightsMod
 	{
 		static void Postfix(LocoControllerBase __instance)
 		{
-			Debug.Log($"[LocoLights] SetReverser patch (reverser={__instance.reverser})");
+			// TODO: use switch on fireman's side of cab instead or reverser for steam loco
 			LocoLights locoLights = __instance.train.transform.gameObject.GetComponent<LocoLights>();
 			if (locoLights == null) { return; }
 

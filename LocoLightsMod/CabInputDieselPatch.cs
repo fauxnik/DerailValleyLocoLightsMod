@@ -12,8 +12,6 @@ namespace LocoLightsMod
 
         private static void Postfix(CabInputDiesel __instance)
         {
-            if (!Main.enabled) return;
-
             instance = __instance;
             instance.StartCoroutine(AttachListeners());
         }

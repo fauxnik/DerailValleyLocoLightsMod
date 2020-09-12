@@ -1,53 +1,61 @@
 ﻿using Harmony12;
-using System;
 using System.Reflection;
+using UnityEngine;
 using UnityModManagerNet;
 
 namespace LocoLightsMod
 {
+#if DEBUG
+    [EnableReloading]
+#endif
     public class Main
     {
-        public static bool enabled;
-        public static Action<float> Update;
+        private static HarmonyInstance harmony;
 
-        private static bool OnToggle(UnityModManager.ModEntry modEntry, bool value)
+        private static bool OnLoad(UnityModManager.ModEntry modEntry)
         {
-            enabled = value;
+            modEntry.OnUnload = OnUnload;
 
-            return true;
-        }
-
-        private static bool Load(UnityModManager.ModEntry modEntry)
-        {
-            modEntry.OnToggle = OnToggle;
-            modEntry.OnUpdate = OnUpdate;
-
-            var harmony = HarmonyInstance.Create(modEntry.Info.Id);
+            harmony = HarmonyInstance.Create(modEntry.Info.Id);
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
+            var trainCars = GameObject.FindObjectsOfType<TrainCar>();
+            foreach (var car in trainCars)
+            {
+                TrainCar_Start_Patch.DoCreate(car);
+            }
+
             return true;
         }
 
-        private static void OnUpdate(UnityModManager.ModEntry modEntry, float delta)
+        private static bool OnUnload(UnityModManager.ModEntry modEntry)
         {
-            if (!enabled) { return; }
-
-			Update?.Invoke(delta);
-		}
-
-        [HarmonyPatch(typeof(TrainCar), "Start")]
-        internal class LocoSteamHeavyPatch
-        {
-            private static void Postfix(TrainCar __instance)
+            var trainCars = GameObject.FindObjectsOfType<TrainCar>();
+            foreach (var car in trainCars)
             {
-                if (!enabled || !CarTypes.IsAnyLocomotiveOrTender(__instance.carType)) return;
-
-                try
-                {
-                    LocoLights.SetupLights(__instance);
-                }
-                catch { }
+                TrainCar_OnDestroy_Patch.DoDestroy(car);
             }
+
+            harmony.UnpatchAll(modEntry.Info.Id);
+
+            return true;
+        }
+
+        public static void Log(object message)
+        {
+#if DEBUG
+            Debug.Log($"[LocoLights] >>> {message}");
+#endif
+        }
+
+        public static void LogWarning(object message)
+        {
+            Debug.LogWarning($"[LocoLights] >>> {message}");
+        }
+
+        public static void LogError(object message)
+        {
+            Debug.LogError($"[LocoLights] >>> {message}");
         }
     }
 }
