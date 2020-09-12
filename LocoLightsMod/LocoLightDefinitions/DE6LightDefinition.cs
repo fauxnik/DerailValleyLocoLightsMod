@@ -203,10 +203,7 @@ namespace LocoLightsMod.LocoLightDefinitions
 
             // this is dumb, but DE6 cab light is fucked
             Transform cabLight = car.transform.Find("[cab light]");
-            go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            go.name = intLights[0];
-            r = go.GetComponent<Renderer>();
-            r.enabled = false;
+            go = new GameObject() { name = intLights[0] };
             l = go.AddComponent<Light>();
             l.type = LightType.Point;
             l.shadows = LightShadows.Hard;
