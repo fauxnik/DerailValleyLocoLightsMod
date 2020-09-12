@@ -29,15 +29,15 @@ namespace LocoLightsMod.LocoLightDefinitions
                 car,
                 new LocoLightData[]
                 {
-                    new LocoLightData(extLights[0], 4f, 1f, 1.75f, 1f, 0f, 0.1f),
-                    new LocoLightData(extLights[1], 4f, 1f, 1.75f, 1f, 0f, 0.1f),
-                    new LocoLightData(extLights[2], 4f, 1f, 1.75f, 0f, 1f, 0.1f),
-                    new LocoLightData(extLights[3], 4f, 1f, 1.75f, 0f, 1f, 0.1f),
-                    new LocoLightData(extLights[4], 3f, 0.5f, 0.6f, 0f, 1f, 0f),
-                    new LocoLightData(extLights[5], 3f, 0.5f, 0.6f, 1f, 0f, 0f),
+                    new LocoLightData(extLights[0], 4f, 1.25f, 1.25f, 1f, 0f, 0.1f),
+                    new LocoLightData(extLights[1], 4f, 1.25f, 1.25f, 1f, 0f, 0.1f),
+                    new LocoLightData(extLights[2], 4f, 1.25f, 1.25f, 0f, 1f, 0.1f),
+                    new LocoLightData(extLights[3], 4f, 1.25f, 1.25f, 0f, 1f, 0.1f),
+                    new LocoLightData(extLights[4], 3f, 0.3f, 0.5f, 0f, 1f, 0f),
+                    new LocoLightData(extLights[5], 3f, 0.3f, 0.5f, 1f, 0f, 0f),
                 },
                 new LocoLightData[] {
-                    new LocoLightData(intLights[0], 2f, 0.1f, 0.15f),
+                    new LocoLightData(intLights[0], 0f, 0.125f, 0.125f),
                 });
 
             // make the red lenses transparent
