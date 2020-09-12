@@ -1,5 +1,6 @@
 ﻿using Harmony12;
 using LocoLightsMod.LocoLightDefinitions;
+using LocoLightsMod.TrainCarLightDefinitions;
 using System;
 using UnityEngine;
 
@@ -22,6 +23,8 @@ namespace LocoLightsMod
                     default:
                         Main.Log($"Skipping LocoLights creation for train car {car.ID} ({car.carType})");
                         return;
+
+                // locomotives
                     case TrainCarType.LocoSteamHeavy:
                         SH282LightDefinition.SetupLights(car);
                         break;
@@ -30,6 +33,13 @@ namespace LocoLightsMod
                         break;
                     case TrainCarType.LocoDiesel:
                         DE6LightDefinition.SetupLights(car);
+                        break;
+
+                // train cars
+                    case TrainCarType.PassengerBlue:
+                    case TrainCarType.PassengerGreen:
+                    case TrainCarType.PassengerRed:
+                        PassengerCarLightDefinition.SetupLights(car);
                         break;
                 }
                 Main.Log($"Created LocoLights for train car {car.ID} ({car.carType})");
