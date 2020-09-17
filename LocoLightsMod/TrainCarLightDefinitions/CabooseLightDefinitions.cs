@@ -45,7 +45,7 @@ namespace LocoLightsMod.TrainCarLightDefinitions
             go = new GameObject() { name = intLights[0] };
             l = go.AddComponent<Light>();
             l.type = LightType.Point;
-            l.shadows = LightShadows.Hard;
+            l.shadows = Main.settings.interiorShadows;
             l.color = new Color32(255, 198, 111, 255);
             l.range = 6.6f;
             l.enabled = true;

@@ -74,7 +74,7 @@ namespace LocoLightsMod.LocoLightDefinitions
             StandardShaderUtils.ChangeRenderMode(r.material, StandardShaderUtils.BlendMode.Emission);
             r.enabled = false;
             l = go.AddComponent<Light>();
-            l.shadows = LightShadows.Soft;
+            l.shadows = Main.settings.exteriorShadows;
             l.type = LightType.Spot;
             l.innerSpotAngle = 17;
             l.spotAngle = 51;
@@ -154,7 +154,7 @@ namespace LocoLightsMod.LocoLightDefinitions
             go.SetActive(true);
             l = go.GetComponent<Light>();
             l.color = new Color32(255, 251, 225, 255);
-            l.shadows = LightShadows.Hard;
+            l.shadows = Main.settings.interiorShadows;
             l.enabled = false;
         }
     }

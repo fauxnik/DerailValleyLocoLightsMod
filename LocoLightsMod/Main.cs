@@ -10,11 +10,16 @@ namespace LocoLightsMod
 #endif
     public class Main
     {
+        public static Settings settings;
         private static HarmonyInstance harmony;
 
         private static bool OnLoad(UnityModManager.ModEntry modEntry)
         {
+            try { settings = Settings.Load<Settings>(modEntry); } catch { }
+
             modEntry.OnUnload = OnUnload;
+            modEntry.OnGUI = OnGUI;
+            modEntry.OnSaveGUI = OnSaveGUI;
 
             harmony = HarmonyInstance.Create(modEntry.Info.Id);
             harmony.PatchAll(Assembly.GetExecutingAssembly());
@@ -40,6 +45,9 @@ namespace LocoLightsMod
 
             return true;
         }
+
+        static void OnGUI(UnityModManager.ModEntry modEntry) { settings.Draw(modEntry); }
+        static void OnSaveGUI(UnityModManager.ModEntry modEntry) { settings.Save(modEntry); }
 
         public static void Log(object message)
         {

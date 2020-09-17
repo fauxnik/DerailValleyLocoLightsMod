@@ -72,6 +72,7 @@
     <Compile Include="CabInputSteamExtraPatch.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="StandardShaderUtils.cs" />
     <Compile Include="TrainCarLightDefinitions\CabooseLightDefinitions.cs" />
     <Compile Include="TrainCarLightDefinitions\PassengerCarLightDefinition.cs" />

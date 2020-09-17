@@ -51,7 +51,7 @@ namespace LocoLightsMod.LocoLightDefinitions
             StandardShaderUtils.ChangeRenderMode(r.material, StandardShaderUtils.BlendMode.Emission);
             r.enabled = false;
             l = go.AddComponent<Light>();
-            l.shadows = LightShadows.Soft;
+            l.shadows = Main.settings.exteriorShadows;
             l.type = LightType.Spot;
             l.innerSpotAngle = 14;
             l.spotAngle = 42;
@@ -68,7 +68,7 @@ namespace LocoLightsMod.LocoLightDefinitions
             go = car.transform.Find("[cab light]").gameObject;
             go.SetActive(true);
             l = go.GetComponent<Light>();
-            l.shadows = LightShadows.Hard;
+            l.shadows = Main.settings.interiorShadows;
             l.color = new Color32(255, 179, 63, 255);
             l.enabled = false;
         }

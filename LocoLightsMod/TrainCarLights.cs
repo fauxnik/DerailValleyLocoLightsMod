@@ -9,9 +9,9 @@ namespace LocoLightsMod
         protected LocoLightData[] exterior;
         protected LocoLightData[] interior;
         protected Renderer[] renderers;
-        protected Light[] extLights;
+        public Light[] extLights { get; protected set; }
         protected Action<float>[] extFlickerers;
-        protected Light[] intLights;
+        public Light[] intLights { get; protected set; }
         protected Action<float>[] intFlickerers;
         public virtual bool IsOn { get => true; protected set { } }
 
@@ -72,6 +72,22 @@ namespace LocoLightsMod
 
             UpdateFlickerers();
             UpdateLights();
+        }
+
+        public void SetExteriorShadows(LightShadows shadows)
+        {
+            foreach (var light in extLights)
+            {
+                light.shadows = shadows;
+            }
+        }
+
+        public void SetInteriorShadows(LightShadows shadows)
+        {
+            foreach (var light in intLights)
+            {
+                light.shadows = shadows;
+            }
         }
 
         protected virtual float GetDirectionalScalar(LocoLightData datum)

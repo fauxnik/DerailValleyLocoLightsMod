@@ -80,7 +80,7 @@ namespace LocoLightsMod.LocoLightDefinitions
             StandardShaderUtils.ChangeRenderMode(r.material, StandardShaderUtils.BlendMode.Emission);
             r.enabled = false;
             l = go.AddComponent<Light>();
-            l.shadows = LightShadows.Soft;
+            l.shadows = Main.settings.exteriorShadows;
             l.type = LightType.Spot;
             l.innerSpotAngle = 14;
             l.spotAngle = 42;
@@ -206,7 +206,7 @@ namespace LocoLightsMod.LocoLightDefinitions
             go = new GameObject() { name = intLights[0] };
             l = go.AddComponent<Light>();
             l.type = LightType.Point;
-            l.shadows = LightShadows.Hard;
+            l.shadows = Main.settings.interiorShadows;
             // default cab light: Color32(255, 253, 240, 255)
             l.color = new Color32(255, 251, 225, 255);
             l.range = 6.6f;
