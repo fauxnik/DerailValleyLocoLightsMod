@@ -61,6 +61,7 @@ namespace LocoLightsMod
 
         public static void DoDestroy(TrainCar car)
         {
+            /*
             try
             {
                 var tcLights = car.gameObject.GetComponent<TrainCarLights>();
@@ -70,6 +71,7 @@ namespace LocoLightsMod
                 GameObject.DestroyImmediate(tcLights);
             }
             catch (Exception e) { Main.LogError(e); }
+            */
         }
     }
 }

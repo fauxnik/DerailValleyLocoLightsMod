@@ -28,7 +28,8 @@ namespace LocoLightsMod
                 intFlickerers[i]?.Invoke(Time.deltaTime);
             }
         }
-
+        
+        /*
         void OnDestroy()
         {
             Main.Log($"Detroying lights for {car.ID}...");
@@ -45,6 +46,7 @@ namespace LocoLightsMod
                 GameObject.DestroyImmediate(light);
             }
         }
+        */
 
         public void Init(TrainCar car, LocoLightData[] exterior, LocoLightData[] interior)
         {
