@@ -37,8 +37,8 @@ namespace LocoLightsMod.LocoLightDefinitions
                     new LocoLightData(extLights[3], 0f, 1.25f, 1.25f, 1f, 0f, 0.1f),
                     new LocoLightData(extLights[4], 0f, 1.25f, 1.25f, 0f, 1f, 0.1f),
                     new LocoLightData(extLights[5], 0f, 1.25f, 1.25f, 0f, 1f, 0.1f),
-                    new LocoLightData(extLights[6], 0f, 0.3f, 0.5f, 0f, 1f, 0f),
-                    new LocoLightData(extLights[7], 0f, 0.3f, 0.5f, 1f, 0f, 0f),
+                    new LocoLightData(extLights[6], 0f, 0.3f, 0.3f, 0f, 1f, 0f),
+                    new LocoLightData(extLights[7], 0f, 0.3f, 0.3f, 1f, 0f, 0f),
                 },
                 new LocoLightData[] {
                     new LocoLightData(intLights[0], 0f, 0.375f, 0.375f),
