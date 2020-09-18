@@ -26,7 +26,7 @@ namespace LocoLightsMod
 
                 // locomotives
                     case TrainCarType.LocoSteamHeavy:
-                        SH282LightDefinition.SetupLights(car);
+                        SH282LightDefinition.SetupEngine(car);
                         break;
                     case TrainCarType.LocoShunter:
                         DE2LightDefinition.SetupLights(car);

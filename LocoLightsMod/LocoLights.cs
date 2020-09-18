@@ -8,7 +8,7 @@ namespace LocoLightsMod
         public override bool IsOn { get; protected set; }
         public float Direction { get; private set; }
 
-        new public void Init(TrainCar car, LocoLightData[] exterior, LocoLightData[] interior)
+        public override void Init(TrainCar car, LocoLightData[] exterior, LocoLightData[] interior)
         {
             base.Init(car, exterior, interior);
             Direction = 0f;

@@ -48,24 +48,17 @@ namespace LocoLightsMod
         }
         */
 
-        public void Init(TrainCar car, LocoLightData[] exterior, LocoLightData[] interior)
+        public virtual void Init(TrainCar car, LocoLightData[] exterior, LocoLightData[] interior)
         {
             Main.Log($"Initializing lights for {car.ID}...");
             this.car = car;
-            this.exterior = exterior;
+
+            AddExtLights(car, exterior);
+
             this.interior = interior;
-            renderers = new Renderer[exterior.Length];
-            extLights = new Light[exterior.Length];
-            extFlickerers = new Action<float>[exterior.Length];
             intLights = new Light[interior.Length];
             intFlickerers = new Action<float>[interior.Length];
 
-            for (int i = 0; i < exterior.Length; i++)
-            {
-                LocoLightData datum = exterior[i];
-                renderers[i] = car.transform.Find(datum.name).gameObject.GetComponent<Renderer>();
-                extLights[i] = renderers[i].transform.gameObject.GetComponent<Light>();
-            }
             for (int i = 0; i < interior.Length; i++)
             {
                 LocoLightData datum = interior[i];
@@ -74,6 +67,81 @@ namespace LocoLightsMod
 
             UpdateFlickerers();
             UpdateLights();
+        }
+
+        public void AddExtLights(TrainCar car, LocoLightData[] exterior)
+        {
+            int basis = 0;
+            if (this.exterior == null) { this.exterior = exterior; }
+            else
+            {
+                basis = this.exterior.Length;
+                this.exterior = CombineArrays<LocoLightData>(this.exterior, exterior);
+            }
+
+            if (renderers == null) { renderers = new Renderer[exterior.Length]; }
+            else { renderers = ExpandArray(renderers, exterior.Length); }
+
+            if (extLights == null) { extLights = new Light[exterior.Length]; }
+            else { extLights = ExpandArray(extLights, exterior.Length); }
+
+            if (extFlickerers == null) { extFlickerers = new Action<float>[exterior.Length]; }
+            else { extFlickerers = ExpandArray(extFlickerers, exterior.Length); }
+
+            for (int i = basis; i < this.exterior.Length; i++)
+            {
+                LocoLightData datum = exterior[i - basis];
+                renderers[i] = GameObjectUtils.FindObject(car.gameObject, datum.name).GetComponent<Renderer>();
+                extLights[i] = renderers[i].transform.gameObject.GetComponent<Light>();
+            }
+        }
+
+        public void RemoveExtLight(string name)
+        {
+            int index = -1;
+            for (int j = 0; j < exterior.Length; j++)
+            {
+                if (exterior[j].name == name)
+                {
+                    index = j;
+                    break;
+                }
+            }
+            if (index < 0) { return; }
+
+            exterior = RemoveAt(exterior, index);
+            renderers = RemoveAt(renderers, index);
+            extLights = RemoveAt(extLights, index);
+            extFlickerers = RemoveAt(extFlickerers, index);
+        }
+
+        private T[] CombineArrays<T>(T[] a, T[] b)
+        {
+            T[] c = new T[a.Length + b.Length];
+            a.CopyTo(c, 0);
+            b.CopyTo(c, a.Length);
+            return c;
+        }
+
+        private T[] ExpandArray<T>(T[] a, int more)
+        {
+            T[] b = new T[a.Length + more];
+            a.CopyTo(b, 0);
+            return b;
+        }
+
+        private T[] RemoveAt<T>(T[] a, int index)
+        {
+            T[] b = new T[a.Length - 1];
+            for (int i = 0; i < index; i++)
+            {
+                b[i] = a[i];
+            }
+            for (int j = index + 1; j < a.Length; j++)
+            {
+                b[j - 1] = a[j];
+            }
+            return b;
         }
 
         public void SetExteriorShadows(LightShadows shadows)
