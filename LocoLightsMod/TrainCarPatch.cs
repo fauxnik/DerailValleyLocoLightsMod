@@ -61,17 +61,17 @@ namespace LocoLightsMod
 
         public static void DoDestroy(TrainCar car)
         {
-            /*
             try
             {
                 var tcLights = car.gameObject.GetComponent<TrainCarLights>();
                 if (tcLights == null) { return; }
 
+                if (car.carType == TrainCarType.LocoSteamHeavy) { SH282LightDefinition.TeardownTender(car.rearCoupler?.coupledTo?.train, car); }
+
                 Main.Log($"Destroying LocoLights for train car {car.ID}");
-                GameObject.DestroyImmediate(tcLights);
+                GameObject.Destroy(tcLights);
             }
             catch (Exception e) { Main.LogError(e); }
-            */
         }
     }
 }

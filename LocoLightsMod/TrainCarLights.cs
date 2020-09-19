@@ -29,24 +29,26 @@ namespace LocoLightsMod
             }
         }
         
-        /*
         void OnDestroy()
         {
             Main.Log($"Detroying lights for {car.ID}...");
-            foreach (var renderer in renderers)
+            IsOn = false;
+            foreach (var datum in exterior)
             {
-                GameObject.DestroyImmediate(renderer);
+                GameObject.Destroy(GameObjectUtils.FindObject(car.gameObject, datum.name));
             }
-            foreach (var light in extLights)
+            exterior = new LocoLightData[0];
+            renderers = new Renderer[0];
+            extLights = new Light[0];
+            extFlickerers = new Action<float>[0];
+            foreach (var datum in interior)
             {
-                GameObject.DestroyImmediate(light);
+                GameObject.Destroy(GameObjectUtils.FindObject(car.gameObject, datum.name));
             }
-            foreach (var light in intLights)
-            {
-                GameObject.DestroyImmediate(light);
-            }
+            interior = new LocoLightData[0];
+            intLights = new Light[0];
+            intFlickerers = new Action<float>[0];
         }
-        */
 
         public virtual void Init(TrainCar car, LocoLightData[] exterior, LocoLightData[] interior)
         {
@@ -62,7 +64,7 @@ namespace LocoLightsMod
             for (int i = 0; i < interior.Length; i++)
             {
                 LocoLightData datum = interior[i];
-                intLights[i] = car.transform.Find(datum.name).gameObject.GetComponent<Light>();
+                intLights[i] = GameObjectUtils.FindObject(car.gameObject, datum.name).GetComponent<Light>();
             }
 
             UpdateFlickerers();
@@ -210,6 +212,8 @@ namespace LocoLightsMod
 
             Action<float> flicker = delta =>
             {
+                if (light == null) { return; }
+
                 light.intensity = scalar * ((max - min) * Mathf.PerlinNoise(t, 0f) + min);
 
                 t += delta * rate;

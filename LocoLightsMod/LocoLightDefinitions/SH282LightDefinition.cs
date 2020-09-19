@@ -11,7 +11,7 @@ namespace LocoLightsMod.LocoLightDefinitions
         };
         static readonly string[] intLights = new string[]
         {
-            "[cab light]",
+            "[cab light override]",
         };
 
         public static void SetupEngine(TrainCar engine)
@@ -39,6 +39,11 @@ namespace LocoLightsMod.LocoLightDefinitions
                 new LocoLightData[] {
                     new LocoLightData(intLights[0], 5f, 0.015f, 0.25f),
                 });
+
+            if (engine.rearCoupler.coupledTo?.train?.carType == TrainCarType.Tender)
+            {
+                SetupTender(engine.rearCoupler.coupledTo.train, engine);
+            }
         }
 
         public static void SetupTender(TrainCar tender, TrainCar engine)
@@ -100,13 +105,18 @@ namespace LocoLightsMod.LocoLightDefinitions
 
             go.transform.SetParent(engine.transform, true);
 
-            // default cab light: Color32(255, 253, 240, 255)
-            go = engine.transform.Find("[cab light]").gameObject;
-            go.SetActive(true);
-            l = go.GetComponent<Light>();
+            // copy the cab light so teardown is easier
+            Transform cabLight = engine.transform.Find("[cab light]");
+            go = new GameObject() { name = intLights[0] };
+            l = go.AddComponent<Light>();
+            l.type = LightType.Point;
             l.shadows = Main.settings.interiorShadows;
+            // default cab light: Color32(255, 253, 240, 255)
             l.color = new Color32(255, 179, 63, 255);
+            l.range = 6.6f;
             l.enabled = false;
+            go.transform.position = cabLight.position;
+            go.transform.SetParent(engine.transform, true);
         }
 
         private static void CreateTenderLights(TrainCar tender, TrainCar engine)

@@ -201,7 +201,7 @@ namespace LocoLightsMod.LocoLightDefinitions
 
             go.transform.SetParent(car.transform, true);
 
-            // this is dumb, but DE6 cab light is fucked
+            // DE6 cab light is fucked, but we need to do this anyway so teardown is easier
             Transform cabLight = car.transform.Find("[cab light]");
             go = new GameObject() { name = intLights[0] };
             l = go.AddComponent<Light>();
