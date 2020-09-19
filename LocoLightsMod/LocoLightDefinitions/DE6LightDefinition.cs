@@ -26,8 +26,8 @@ namespace LocoLightsMod.LocoLightDefinitions
 
             CreateLights(car);
 
-            car.transform.gameObject.AddComponent<LocoLights>();
-            car.transform.gameObject.GetComponent<LocoLights>().Init(
+            var locoLights = car.transform.gameObject.AddComponent<LocoLights>();
+            locoLights.Init(
                 car,
                 new LocoLightData[]
                 {
@@ -77,6 +77,7 @@ namespace LocoLightsMod.LocoLightDefinitions
             go.transform.rotation = Quaternion.Euler(euler.x + 10f, euler.y, euler.z);
             go.transform.localScale = new Vector3(0.19f, 0.19f, 0.05f);
             r = go.GetComponent<Renderer>();
+            r.material.color = new Color32(255, 251, 225, 0);
             StandardShaderUtils.ChangeRenderMode(r.material, StandardShaderUtils.BlendMode.Emission);
             r.enabled = false;
             l = go.AddComponent<Light>();

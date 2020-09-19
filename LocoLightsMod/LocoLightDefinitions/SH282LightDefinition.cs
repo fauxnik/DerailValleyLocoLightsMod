@@ -29,8 +29,8 @@ namespace LocoLightsMod.LocoLightDefinitions
 
             CreateEngineLights(engine);
 
-            engine.transform.gameObject.AddComponent<LocoLights>();
-            engine.transform.gameObject.GetComponent<LocoLights>().Init(
+            var locoLights = engine.transform.gameObject.AddComponent<LocoLights>();
+            locoLights.Init(
                 engine,
                 new LocoLightData[]
                 {
@@ -52,12 +52,15 @@ namespace LocoLightsMod.LocoLightDefinitions
 
             CreateTenderLights(tender, engine);
 
-            engine.gameObject.GetComponent<LocoLights>().AddExtLights(
+            var locoLights = engine.gameObject.GetComponent<LocoLights>();
+            locoLights.AddExtLights(
                 tender,
                 new LocoLightData[]
                 {
                     new LocoLightData(extLights[1], 4f, 0.75f, 1.75f, 0f, 1f, 0.1f),
                 });
+            // trigger updates to flickerers and lights
+            locoLights.SetDirection(locoLights.Direction);
         }
 
         public static void TeardownTender(TrainCar tender, TrainCar engine)
@@ -88,7 +91,7 @@ namespace LocoLightsMod.LocoLightDefinitions
             go.transform.rotation = Quaternion.Euler(euler.x + 10f, euler.y, euler.z);
             go.transform.localScale = new Vector3(0.28f, 0.28f, 0.05f);
             r = go.GetComponent<Renderer>();
-            r.material.color = new Color32(255, 255, 255, 0);
+            r.material.color = new Color32(255, 198, 111, 0);
             StandardShaderUtils.ChangeRenderMode(r.material, StandardShaderUtils.BlendMode.Emission);
             r.enabled = false;
             l = go.AddComponent<Light>();
@@ -129,15 +132,17 @@ namespace LocoLightsMod.LocoLightDefinitions
             // Rear Head Light
             go = GameObject.Instantiate(Main.assets["SH282_Tender_Light_Body"], tender.transform.position, tender.transform.rotation, tender.transform);
             go.name = "tender headlight";
-            go.transform.Find("Body").GetComponent<MeshRenderer>().sharedMaterial = engine.transform.Find("Exterior").Find("SH_exterior").Find("ext Locomotive Body").GetComponent<MeshRenderer>().sharedMaterial;
-            go.transform.Find("Bulb").GetComponent<MeshRenderer>().sharedMaterial = engine.transform.Find("Exterior").Find("SH_exterior").Find("ext Headlight Lightbulb").GetComponent<MeshRenderer>().sharedMaterial;
-            go.transform.Find("Glass").GetComponent<MeshRenderer>().sharedMaterial = engine.transform.Find("Exterior").Find("SH_exterior").Find("ext Headlight Glass").GetComponent<MeshRenderer>().sharedMaterial;
+            go.transform.Find("Body").GetComponent<MeshRenderer>().sharedMaterial
+                = engine.transform.Find("Exterior/SH_exterior/ext Locomotive Body").GetComponent<MeshRenderer>().sharedMaterial;
+            go.transform.Find("Bulb").GetComponent<MeshRenderer>().sharedMaterial
+                = engine.transform.Find("Exterior/SH_exterior/ext Headlight Lightbulb").GetComponent<MeshRenderer>().sharedMaterial;
+            go.transform.Find("Glass").GetComponent<MeshRenderer>().sharedMaterial
+                = engine.transform.Find("Exterior/SH_exterior/ext Headlight Glass").GetComponent<MeshRenderer>().sharedMaterial;
             go = GameObjectUtils.FindObject(go, "Light Disk");
             go.name = extLights[1];
-            //go.transform.SetParent(tender.transform, true);
             GameObject.DestroyImmediate(go.GetComponent<Collider>());
             r = go.GetComponent<Renderer>();
-            r.material.color = new Color32(255, 255, 255, 0);
+            r.material.color = new Color32(255, 198, 111, 0);
             StandardShaderUtils.ChangeRenderMode(r.material, StandardShaderUtils.BlendMode.Emission);
             r.enabled = false;
             l = go.AddComponent<Light>();
