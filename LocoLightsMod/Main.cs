@@ -55,9 +55,7 @@ namespace LocoLightsMod
 
         public static void Log(object message)
         {
-#if DEBUG
-            Debug.Log($"[LocoLights] >>> {message}");
-#endif
+            if (settings.verbose) { Debug.Log($"[LocoLights] >>> {message}"); }
         }
 
         public static void LogWarning(object message)
