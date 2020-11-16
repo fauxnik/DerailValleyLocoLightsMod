@@ -15,6 +15,8 @@ namespace LocoLightsMod
         protected Action<float>[] intFlickerers;
         public virtual bool IsOn { get => true; protected set { } }
 
+        protected string SafeCarID => (car.logicCar != null) ? car.ID : "[No ID]";
+
         void Update()
         {
             if (!IsOn) { return; }
@@ -31,7 +33,7 @@ namespace LocoLightsMod
         
         void OnDestroy()
         {
-            Main.Log($"Detroying lights for {car.ID}...");
+            Main.Log($"Detroying lights for {SafeCarID}...");
             IsOn = false;
             foreach (var datum in exterior)
             {
@@ -52,7 +54,7 @@ namespace LocoLightsMod
 
         public virtual void Init(TrainCar car, LocoLightData[] exterior, LocoLightData[] interior)
         {
-            Main.Log($"Initializing lights for {car.ID}...");
+            Main.Log($"Initializing lights for {SafeCarID}...");
             this.car = car;
 
             AddExtLights(car, exterior);
@@ -170,7 +172,7 @@ namespace LocoLightsMod
         protected void UpdateFlickerers()
         {
             if (car == null || exterior == null || interior == null) { return; }
-            Main.Log($"Updating flickerers for {car.ID}...");
+            Main.Log($"Updating flickerers for {SafeCarID}...");
 
             for (int i = 0; i < exterior.Length; i++)
             {
@@ -188,7 +190,7 @@ namespace LocoLightsMod
         protected void UpdateLights()
         {
             if (car == null || exterior == null || interior == null) { return; }
-            Main.Log($"Updating lights for {car.ID}...");
+            Main.Log($"Updating lights for {SafeCarID}...");
 
             for (int i = 0; i < renderers.Length; i++)
             {

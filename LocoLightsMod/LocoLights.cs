@@ -16,14 +16,14 @@ namespace LocoLightsMod
 
         public void SetLights(bool isOn)
         {
-            Main.Log($"Setting lights for {car.ID}... (prev={(IsOn ? "on" : "off")}, next={(isOn ? "on" : "off")})");
+            Main.Log($"Setting lights for {SafeCarID}... (prev={(IsOn ? "on" : "off")}, next={(isOn ? "on" : "off")})");
             IsOn = isOn;
             UpdateLights();
         }
 
         public void SetDirection(float direction)
         {
-            Main.Log($"Setting direction for {base.car.ID}... (prev={Direction}, next={direction})");
+            Main.Log($"Setting direction for {SafeCarID}... (prev={Direction}, next={direction})");
             Direction = direction;
             base.UpdateFlickerers();
             base.UpdateLights();
