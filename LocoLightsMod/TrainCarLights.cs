@@ -15,7 +15,7 @@ namespace LocoLightsMod
         protected Action<float>[] intFlickerers;
         public virtual bool IsOn { get => true; protected set { } }
 
-        protected string SafeCarID => (car.logicCar != null) ? car.ID : "[No ID]";
+        protected string SafeCarID => (car?.logicCar != null) ? car.ID : "[No ID]";
 
         void Update()
         {
