@@ -9,7 +9,9 @@ namespace LocoLightsMod
 	{
 		static void Postfix(LocoControllerBase __instance)
 		{
-			// TODO: use switch on fireman's side of cab instead or reverser for steam loco
+			// use switch on fireman's side of cab instead of reverser for steam loco
+			if (__instance.train.carType == TrainCarType.LocoSteamHeavy) return;
+
 			LocoLights locoLights = __instance.train.transform.gameObject.GetComponent<LocoLights>();
 			if (locoLights == null) { return; }
 

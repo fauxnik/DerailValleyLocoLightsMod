@@ -36,6 +36,7 @@ namespace LocoLightsMod.LocoLightDefinitions
                 {
                     new LocoLightData(extLights[0], 4f, 0.75f, 1.75f, 1f, 0f, 0.1f),
                 },
+                // TODO: control cab light using fire simulation (and firebox door?)
                 new LocoLightData[] {
                     new LocoLightData(intLights[0], 5f, 0.015f, 0.25f),
                 });
