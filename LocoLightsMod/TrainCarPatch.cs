@@ -18,10 +18,12 @@ namespace LocoLightsMod
         {
             try
             {
+                string carId = (car.logicCar != null) ? car.ID : "[No ID]";
+
                 switch (car.carType)
                 {
                     default:
-                        Main.Log($"Skipping LocoLights creation for train car {car.ID} ({car.carType})");
+                        Main.Log($"Skipping LocoLights creation for train car {carId} ({car.carType})");
                         return;
 
                 // locomotives
@@ -45,7 +47,7 @@ namespace LocoLightsMod
                         CabooseLightDefinitions.SetupLights(car);
                         break;
                 }
-                Main.Log($"Created LocoLights for train car {car.ID} ({car.carType})");
+                Main.Log($"Created LocoLights for train car {carId} ({car.carType})");
             }
             catch (Exception e) { Main.LogError(e); }
         }
@@ -68,7 +70,9 @@ namespace LocoLightsMod
 
                 if (car.carType == TrainCarType.LocoSteamHeavy) { SH282LightDefinition.TeardownTender(car.rearCoupler?.coupledTo?.train, car); }
 
-                Main.Log($"Destroying LocoLights for train car {car.ID}");
+                string carId = (car.logicCar != null) ? car.ID : "[No ID]";
+
+                Main.Log($"Destroying LocoLights for train car {carId}");
                 GameObject.Destroy(tcLights);
             }
             catch (Exception e) { Main.LogError(e); }
