@@ -7,13 +7,9 @@ namespace LocoLightsMod
     [HarmonyPatch(typeof(CabInputSteamExtra), "OnEnable")]
     internal class SH282HeadLightSwitchPatch
     {
-        static CabInputSteamExtra instance;
-        static LocoLights locoLights;
-
         private static void Postfix(CabInputSteamExtra __instance)
         {
-            instance = __instance;
-            instance.StartCoroutine(AttachListeners());
+            __instance.StartCoroutine(AttachListeners(__instance));
         }
 
         private static float LeverPositionToDirection(float value)
@@ -26,7 +22,7 @@ namespace LocoLightsMod
             return (1f - direction) / 2f;
         }
 
-        static IEnumerator AttachListeners()
+        static IEnumerator AttachListeners(CabInputSteamExtra instance)
         {
             yield return null;
 
@@ -34,8 +30,7 @@ namespace LocoLightsMod
             DV.CabControls.ControlImplBase lightCtrl = light_switch
                 .gameObject.GetComponent<DV.CabControls.ControlImplBase>();
 
-            if (PlayerManager.Car.carType == TrainCarType.LocoSteamHeavy)
-                locoLights = PlayerManager.Car.GetComponent<LocoLights>();
+            LocoLights locoLights = TrainCar.Resolve(instance.gameObject).GetComponent<LocoLights>();
 
             var isInitialized = Traverse.Create(lightCtrl).Field("isInitialized");
 
