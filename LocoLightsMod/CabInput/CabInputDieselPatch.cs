@@ -7,16 +7,12 @@ namespace LocoLightsMod
     [HarmonyPatch(typeof(CabInputDiesel), "OnEnable")]
     internal class DE6HeadLightSwitchPatch
     {
-        static CabInputDiesel instance;
-        static LocoLights locoLights;
-
         private static void Postfix(CabInputDiesel __instance)
         {
-            instance = __instance;
-            instance.StartCoroutine(AttachListeners());
+            __instance.StartCoroutine(AttachListeners(__instance));
         }
 
-        static IEnumerator<object> AttachListeners()
+        static IEnumerator<object> AttachListeners(CabInputDiesel instance)
         {
             yield return (object)null;
 
@@ -24,9 +20,7 @@ namespace LocoLightsMod
             DV.CabControls.ControlImplBase lightCtrl = rotary01
                 .gameObject.GetComponent<DV.CabControls.ControlImplBase>();
 
-            if (PlayerManager.Car.carType == TrainCarType.LocoDiesel)
-                locoLights = PlayerManager.Car.GetComponent<LocoLights>();
-
+            LocoLights locoLights = TrainCar.Resolve(instance.gameObject).GetComponent<LocoLights>();
             if (locoLights != null) { lightCtrl.SetValue(locoLights.IsOn ? 1f : 0f); }
 
             lightCtrl.ValueChanged += (e =>
